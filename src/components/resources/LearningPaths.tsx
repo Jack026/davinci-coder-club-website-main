@@ -7,102 +7,104 @@ import { useResources } from 'contexts/ResourcesContext'
 
 const LearningPaths = () => {
   const { dispatch } = useResources()
-  const [learningPaths, setLearningPaths] = useState([])
 
-  // Mock learning paths data
+  // Move mock data BEFORE useState
+  const mockPaths = [
+    {
+      id: 'path-1',
+      title: 'Full Stack Web Development',
+      description: 'Complete journey from frontend to backend development with modern frameworks, databases, and deployment strategies.',
+      category: 'web-development',
+      difficulty: 'intermediate' as const,
+      duration: '12 weeks',
+      technologies: ['HTML/CSS', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'AWS'],
+      resources: ['res1', 'res2', 'res3'],
+      progress: 45,
+      enrolled: true,
+      featured: true,
+      completedResources: ['res1'],
+      objectives: [
+        'Build responsive web applications',
+        'Master frontend and backend integration',
+        'Deploy applications to production',
+        'Understand database design'
+      ],
+      prerequisites: ['Basic HTML/CSS knowledge', 'JavaScript fundamentals'],
+      badge: '🌟'
+    },
+    {
+      id: 'path-2',
+      title: 'AI & Machine Learning Engineering',
+      description: 'Master artificial intelligence, machine learning algorithms, deep learning, and MLOps practices for production systems.',
+      category: 'artificial-intelligence',
+      difficulty: 'advanced' as const,
+      duration: '16 weeks',
+      technologies: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Docker', 'Kubernetes'],
+      resources: ['res4', 'res5', 'res6'],
+      progress: 23,
+      enrolled: false,
+      featured: true,
+      completedResources: [],
+      objectives: [
+        'Understand ML algorithms deeply',
+        'Build neural networks from scratch',
+        'Deploy models to production',
+        'Master MLOps workflows'
+      ],
+      prerequisites: ['Python programming', 'Statistics & Mathematics', 'Linear Algebra'],
+      badge: '🤖'
+    },
+    {
+      id: 'path-3',
+      title: 'Mobile App Development',
+      description: 'Build cross-platform mobile applications using React Native, Flutter, and native development approaches.',
+      category: 'mobile-development',
+      difficulty: 'intermediate' as const,
+      duration: '10 weeks',
+      technologies: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Firebase'],
+      resources: ['res7', 'res8', 'res9'],
+      progress: 0,
+      enrolled: false,
+      featured: true,
+      completedResources: [],
+      objectives: [
+        'Master cross-platform development',
+        'Build native mobile features',
+        'Integrate with backend APIs',
+        'Publish apps to app stores'
+      ],
+      prerequisites: ['JavaScript or Dart knowledge', 'Basic mobile design principles'],
+      badge: '📱'
+    },
+    {
+      id: 'path-4',
+      title: 'Cybersecurity Fundamentals',
+      description: 'Learn security principles, ethical hacking, penetration testing, and how to protect digital assets.',
+      category: 'cybersecurity',
+      difficulty: 'beginner' as const,
+      duration: '8 weeks',
+      technologies: ['Kali Linux', 'Python', 'Wireshark', 'Metasploit', 'NMAP'],
+      resources: ['res10', 'res11', 'res12'],
+      progress: 78,
+      enrolled: true,
+      featured: false,
+      completedResources: ['res10', 'res11'],
+      objectives: [
+        'Understand security fundamentals',
+        'Learn ethical hacking techniques',
+        'Master vulnerability assessment',
+        'Implement security best practices'
+      ],
+      prerequisites: ['Basic networking knowledge', 'Command line familiarity'],
+      badge: '🛡️'
+    }
+  ]
+
+  // Initialize useState with mockPaths directly
+  const [learningPaths] = useState(mockPaths)
+
+  // Use useEffect only for dispatch (since it depends on external dispatch function)
   useEffect(() => {
-    const mockPaths = [
-      {
-        id: 'path-1',
-        title: 'Full Stack Web Development',
-        description: 'Complete journey from frontend to backend development with modern frameworks, databases, and deployment strategies.',
-        category: 'web-development',
-        difficulty: 'intermediate' as const,
-        duration: '12 weeks',
-        technologies: ['HTML/CSS', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'AWS'],
-        resources: ['res1', 'res2', 'res3'],
-        progress: 45,
-        enrolled: true,
-        featured: true,
-        completedResources: ['res1'],
-        objectives: [
-          'Build responsive web applications',
-          'Master frontend and backend integration',
-          'Deploy applications to production',
-          'Understand database design'
-        ],
-        prerequisites: ['Basic HTML/CSS knowledge', 'JavaScript fundamentals'],
-        badge: '🌟'
-      },
-      {
-        id: 'path-2',
-        title: 'AI & Machine Learning Engineering',
-        description: 'Master artificial intelligence, machine learning algorithms, deep learning, and MLOps practices for production systems.',
-        category: 'artificial-intelligence',
-        difficulty: 'advanced' as const,
-        duration: '16 weeks',
-        technologies: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Docker', 'Kubernetes'],
-        resources: ['res4', 'res5', 'res6'],
-        progress: 23,
-        enrolled: false,
-        featured: true,
-        completedResources: [],
-        objectives: [
-          'Understand ML algorithms deeply',
-          'Build neural networks from scratch',
-          'Deploy models to production',
-          'Master MLOps workflows'
-        ],
-        prerequisites: ['Python programming', 'Statistics & Mathematics', 'Linear Algebra'],
-        badge: '🤖'
-      },
-      {
-        id: 'path-3',
-        title: 'Mobile App Development',
-        description: 'Build cross-platform mobile applications using React Native, Flutter, and native development approaches.',
-        category: 'mobile-development',
-        difficulty: 'intermediate' as const,
-        duration: '10 weeks',
-        technologies: ['React Native', 'Flutter', 'Swift', 'Kotlin', 'Firebase'],
-        resources: ['res7', 'res8', 'res9'],
-        progress: 0,
-        enrolled: false,
-        featured: true,
-        completedResources: [],
-        objectives: [
-          'Master cross-platform development',
-          'Build native mobile features',
-          'Integrate with backend APIs',
-          'Publish apps to app stores'
-        ],
-        prerequisites: ['JavaScript or Dart knowledge', 'Basic mobile design principles'],
-        badge: '📱'
-      },
-      {
-        id: 'path-4',
-        title: 'Cybersecurity Fundamentals',
-        description: 'Learn security principles, ethical hacking, penetration testing, and how to protect digital assets.',
-        category: 'cybersecurity',
-        difficulty: 'beginner' as const,
-        duration: '8 weeks',
-        technologies: ['Kali Linux', 'Python', 'Wireshark', 'Metasploit', 'NMAP'],
-        resources: ['res10', 'res11', 'res12'],
-        progress: 78,
-        enrolled: true,
-        featured: false,
-        completedResources: ['res10', 'res11'],
-        objectives: [
-          'Understand security fundamentals',
-          'Learn ethical hacking techniques',
-          'Master vulnerability assessment',
-          'Implement security best practices'
-        ],
-        prerequisites: ['Basic networking knowledge', 'Command line familiarity'],
-        badge: '🛡️'
-      }
-    ]
-
-    setLearningPaths(mockPaths)
     dispatch({ type: 'SET_LEARNING_PATHS', payload: mockPaths })
   }, [dispatch])
 
