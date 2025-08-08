@@ -241,8 +241,8 @@ const FeaturedEvents = () => {
                         className="flex-1 bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 px-4 rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-primary-500/25 transition-all duration-300 flex items-center justify-center gap-2"
                       >
                         <Users className="w-4 h-4" />
-                        {event.price > 0 ? `₹${event.price}` : 'Register Free'}
-                      </motion.button>
+                        {(event.price ?? 0) > 0 ? `₹${event.price}` : 'Register Free'}
+                        </motion.button>
                       
                       <motion.button
                         whileHover={{ scale: 1.05, y: -2 }}
