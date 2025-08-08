@@ -66,10 +66,12 @@ const config: Config = {
         blink: {
           '50%': { borderColor: 'transparent' },
         },
-        pulse: {
-          '0%, 100%': { opacity: 1 },
-          '50%': { opacity: .5 },
-        },
+        // In your tailwind.config.ts file, around line 70
+pulse: {
+  '0%, 100%': { opacity: '1' },  // Change 1 to '1'
+  '50%': { opacity: '0.5' },     // Change .5 to '0.5'
+},
+
       },
     },
   },
