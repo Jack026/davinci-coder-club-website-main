@@ -1,15 +1,85 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github, Linkedin, Mail, Star, Users, Calendar, MapPin } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useTeam } from 'contexts/TeamContext'
 
+// Define the Profile interface
+interface Profile {
+  id: string;
+  full_name?: string;
+  email?: string;
+  username?: string;
+  avatar_url?: string;
+  is_jack026?: boolean;
+  github_url?: string;
+  linkedin_url?: string;
+  portfolio_url?: string;
+}
+
+// Define the Member interface with profiles property
+interface TeamMember {
+  id: string;
+  name?: string;
+  position: string;
+  department: string;
+  role: string;
+  year?: string; // Make this optional instead of required
+  skills?: string[];
+  projects?: number;
+  contributions?: number;
+  status: string;
+  joinDate?: string;
+  created_at: string;
+  github?: string;
+  linkedin?: string;
+  email?: string;
+  profile_id?: string;
+  profiles?: Profile; // This fixes the TypeScript error
+}
+
 const AllMembers = () => {
   const { state, dispatch } = useTeam()
   const { filteredMembers, filters, loading } = state
   const supabase = createClient()
+
+  // Move fetchMembers outside useEffect and make it a useCallback
+  const fetchMembers = useCallback(async () => {
+    dispatch({ type: 'SET_LOADING', payload: true })
+    
+    try {
+      const { data, error } = await supabase
+        .from('team_members')
+        .select(`
+          *,
+          profiles:profile_id (
+            id,
+            full_name,
+            email,
+            username,
+            avatar_url,
+            is_jack026,
+            github_url,
+            linkedin_url,
+            portfolio_url
+          )
+        `)
+        .eq('status', 'active')
+        .order('is_jack026', { ascending: false })
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      dispatch({ type: 'SET_MEMBERS', payload: data || [] })
+    } catch (error) {
+      console.error('Error fetching members:', error)
+      // Handle error by setting empty members array instead of dispatching SET_ERROR
+      dispatch({ type: 'SET_MEMBERS', payload: [] })
+    } finally {
+      dispatch({ type: 'SET_LOADING', payload: false })
+    }
+  }, [supabase, dispatch])////////
 
   useEffect(() => {
     // Fetch initial data
@@ -35,44 +105,10 @@ const AllMembers = () => {
     return () => {
       subscription.unsubscribe()
     }
-  }, [])
-
-  const fetchMembers = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('team_members')
-        .select(`
-          *,
-          profiles:profile_id (
-            id,
-            full_name,
-            email,
-            username,
-            avatar_url,
-            is_jack026,
-            github_url,
-            linkedin_url,
-            portfolio_url
-          )
-        `)
-        .eq('status', 'active')
-        .order('is_jack026', { ascending: false })
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      // Assuming you have a dispatch action to set the members in your context
-      dispatch({ type: 'SET_MEMBERS', payload: data || [] })
-    } catch (error) {
-      console.error('Error fetching members:', error)
-      // Assuming you have a dispatch action for errors
-      dispatch({ type: 'SET_ERROR', payload: error.message })
-    } finally {
-      // Assuming you have a dispatch action to update loading state
-      dispatch({ type: 'SET_LOADING', payload: false })
-    }
-  }
+  }, [fetchMembers, supabase]) // Fixed: Now properly includes dependencies
 
   const formatDate = (dateString: string) => {
+    if (!dateString) return 'N/A'
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
@@ -166,10 +202,11 @@ const AllMembers = () => {
                   : 'flex flex-col gap-4'
               }`}
             >
-              {filteredMembers.map((member, index) => {
+              {filteredMembers.map((member: TeamMember, index: number) => {
                 const isGridView = filters.view === 'grid'
-                const departmentGradient = getDepartmentGradient(member.department)
-                const isJack026 = member.isJack026
+                const departmentGradient = getDepartmentGradient(member.department || 'Unknown')
+                // Fix: Access is_jack026 from profiles with optional chaining
+                const isJack026 = member.profiles?.is_jack026 || false
 
                 return (
                   <motion.div
@@ -197,7 +234,7 @@ const AllMembers = () => {
                           {/* Avatar */}
                           <div className="relative z-10">
                             <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold text-white transition-transform duration-300 group-hover:scale-110">
-                              {member.name.charAt(0)}
+                              {(member.profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
                             </div>
                             
                             {isJack026 && (
@@ -236,31 +273,31 @@ const AllMembers = () => {
                         {/* Body */}
                         <div className="p-4 flex-1 flex flex-col">
                           <h4 className="text-base font-bold text-white mb-1 font-display group-hover:text-primary-400 transition-colors duration-300 line-clamp-1">
-                            {member.name}
+                            {member.profiles?.full_name || member.name || 'Unknown'}
                             {isJack026 && <span className="ml-1 text-sm">🌟</span>}
                           </h4>
                           
                           <p className="text-primary-400 mb-1 font-semibold text-sm line-clamp-1">
-                            {member.position}
+                            {member.position || 'Member'}
                           </p>
                           
                           <p className="text-gray-400 text-xs mb-3 line-clamp-1">
-                            {member.department}
+                            {member.department || 'Unknown Department'}
                           </p>
 
                           {/* Role */}
                           <div className="flex items-center justify-between mb-3">
-                            <span className={`text-xs font-semibold ${getRoleColor(member.role)}`}>
-                              {formatRole(member.role)}
+                            <span className={`text-xs font-semibold ${getRoleColor(member.role || 'member')}`}>
+                              {formatRole(member.role || 'member')}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {formatDate(member.joinDate)}
+                              {formatDate(member.joinDate || member.created_at)}
                             </span>
                           </div>
 
                           {/* Skills Preview */}
                           <div className="flex flex-wrap gap-1 mb-3">
-                            {member.skills.slice(0, 2).map((skill, skillIndex) => (
+                            {(member.skills || []).slice(0, 2).map((skill: string, skillIndex: number) => (
                               <span
                                 key={skillIndex}
                                 className="px-2 py-1 bg-glass-strong text-xs text-gray-400 rounded-md"
@@ -268,9 +305,9 @@ const AllMembers = () => {
                                 {skill}
                               </span>
                             ))}
-                            {member.skills.length > 2 && (
+                            {(member.skills || []).length > 2 && (
                               <span className="px-2 py-1 bg-glass-strong text-xs text-primary-400 rounded-md">
-                                +{member.skills.length - 2}
+                                +{(member.skills || []).length - 2}
                               </span>
                             )}
                           </div>
@@ -283,9 +320,9 @@ const AllMembers = () => {
 
                           {/* Social Links */}
                           <div className="flex justify-center gap-2 mt-auto">
-                            {member.github && (
+                            {(member.profiles?.github_url || member.github) && (
                               <motion.a
-                                href={member.github}
+                                href={member.profiles?.github_url || member.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.1 }}
@@ -296,9 +333,9 @@ const AllMembers = () => {
                               </motion.a>
                             )}
                             
-                            {member.linkedin && (
+                            {(member.profiles?.linkedin_url || member.linkedin) && (
                               <motion.a
-                                href={member.linkedin}
+                                href={member.profiles?.linkedin_url || member.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.1 }}
@@ -309,9 +346,9 @@ const AllMembers = () => {
                               </motion.a>
                             )}
                             
-                            {member.email && (
+                            {(member.profiles?.email || member.email) && (
                               <motion.a
-                                href={`mailto:${member.email}`}
+                                href={`mailto:${member.profiles?.email || member.email}`}
                                 whileHover={{ scale: 1.1 }}
                                 onClick={(e) => e.stopPropagation()}
                                 className="w-6 h-6 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-600 transition-all duration-300"
@@ -326,7 +363,7 @@ const AllMembers = () => {
                       <>
                         {/* List View */}
                         <div className={`w-16 h-16 bg-gradient-to-br ${departmentGradient} rounded-lg flex items-center justify-center text-lg font-bold text-white mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative`}>
-                          {member.name.charAt(0)}
+                          {(member.profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
                           
                           {isJack026 && (
                             <motion.div
@@ -346,11 +383,11 @@ const AllMembers = () => {
                         <div className="flex-1 mr-4">
                           <div className="flex items-center gap-3 mb-1">
                             <h4 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
-                              {member.name}
+                              {member.profiles?.full_name || member.name || 'Unknown'}
                               {isJack026 && <span className="ml-2 text-sm">🌟</span>}
                             </h4>
-                            <span className={`text-sm font-semibold ${getRoleColor(member.role)}`}>
-                              {formatRole(member.role)}
+                            <span className={`text-sm font-semibold ${getRoleColor(member.role || 'member')}`}>
+                              {formatRole(member.role || 'member')}
                             </span>
                             {isJack026 && (
                               <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
@@ -360,17 +397,17 @@ const AllMembers = () => {
                           </div>
 
                           <p className="text-primary-400 text-sm mb-1 font-semibold">
-                            {member.position}
+                            {member.position || 'Member'}
                           </p>
 
                           <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
                             <div className="flex items-center gap-1">
                               <MapPin className="w-3 h-3" />
-                              {member.department}
+                              {member.department || 'Unknown Department'}
                             </div>
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              Joined {formatDate(member.joinDate)}
+                              Joined {formatDate(member.joinDate || member.created_at)}
                             </div>
                             <div className="flex items-center gap-1">
                               <Users className="w-3 h-3" />
@@ -379,7 +416,7 @@ const AllMembers = () => {
                           </div>
 
                           <div className="flex flex-wrap gap-1">
-                            {member.skills.slice(0, 4).map((skill, skillIndex) => (
+                            {(member.skills || []).slice(0, 4).map((skill: string, skillIndex: number) => (
                               <span
                                 key={skillIndex}
                                 className="px-2 py-1 bg-glass-strong text-xs text-gray-400 rounded-md"
@@ -387,18 +424,18 @@ const AllMembers = () => {
                                 {skill}
                               </span>
                             ))}
-                            {member.skills.length > 4 && (
+                            {(member.skills || []).length > 4 && (
                               <span className="px-2 py-1 bg-glass-strong text-xs text-primary-400 rounded-md">
-                                +{member.skills.length - 4}
+                                +{(member.skills || []).length - 4}
                               </span>
                             )}
                           </div>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          {member.github && (
+                          {(member.profiles?.github_url || member.github) && (
                             <motion.a
-                              href={member.github}
+                              href={member.profiles?.github_url || member.github}
                               target="_blank"
                               rel="noopener noreferrer"
                               whileHover={{ scale: 1.1 }}
