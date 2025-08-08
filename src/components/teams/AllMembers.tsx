@@ -19,27 +19,6 @@ interface Profile {
   portfolio_url?: string;
 }
 
-// Define the Member interface with profiles property
-interface TeamMember {
-  id: string;
-  name?: string;
-  position: string;
-  department: string;
-  role: string;
-  year?: string; // Make this optional instead of required
-  skills?: string[];
-  projects?: number;
-  contributions?: number;
-  status: string;
-  joinDate?: string;
-  created_at: string;
-  github?: string;
-  linkedin?: string;
-  email?: string;
-  profile_id?: string;
-  profiles?: Profile; // This fixes the TypeScript error
-}
-
 const AllMembers = () => {
   const { state, dispatch } = useTeam()
   const { filteredMembers, filters, loading } = state
@@ -71,15 +50,23 @@ const AllMembers = () => {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      dispatch({ type: 'SET_MEMBERS', payload: data || [] })
+      
+      // Transform data to match Member interface from context
+      const transformedData = (data || []).map((item: any) => ({
+        ...item,
+        name: item.profiles?.full_name || item.name || 'Unknown',
+        year: item.year || '2024', // Ensure year is provided
+        profiles: item.profiles // Keep the profiles data
+      }))
+      
+      dispatch({ type: 'SET_MEMBERS', payload: transformedData })
     } catch (error) {
       console.error('Error fetching members:', error)
-      // Handle error by setting empty members array instead of dispatching SET_ERROR
       dispatch({ type: 'SET_MEMBERS', payload: [] })
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false })
     }
-  }, [supabase, dispatch])////////
+  }, [supabase, dispatch])
 
   useEffect(() => {
     // Fetch initial data
@@ -107,7 +94,7 @@ const AllMembers = () => {
     }
   }, [fetchMembers, supabase]) // Fixed: Now properly includes dependencies
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A'
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', { 
@@ -202,11 +189,11 @@ const AllMembers = () => {
                   : 'flex flex-col gap-4'
               }`}
             >
-              {filteredMembers.map((member: TeamMember, index: number) => {
+              {filteredMembers.map((member, index) => {
                 const isGridView = filters.view === 'grid'
                 const departmentGradient = getDepartmentGradient(member.department || 'Unknown')
-                // Fix: Access is_jack026 from profiles with optional chaining
-                const isJack026 = member.profiles?.is_jack026 || false
+                // Access is_jack026 from profiles with optional chaining
+                const isJack026 = (member as any).profiles?.is_jack026 || false
 
                 return (
                   <motion.div
@@ -234,7 +221,7 @@ const AllMembers = () => {
                           {/* Avatar */}
                           <div className="relative z-10">
                             <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold text-white transition-transform duration-300 group-hover:scale-110">
-                              {(member.profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
+                              {((member as any).profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
                             </div>
                             
                             {isJack026 && (
@@ -273,7 +260,7 @@ const AllMembers = () => {
                         {/* Body */}
                         <div className="p-4 flex-1 flex flex-col">
                           <h4 className="text-base font-bold text-white mb-1 font-display group-hover:text-primary-400 transition-colors duration-300 line-clamp-1">
-                            {member.profiles?.full_name || member.name || 'Unknown'}
+                            {(member as any).profiles?.full_name || member.name || 'Unknown'}
                             {isJack026 && <span className="ml-1 text-sm">🌟</span>}
                           </h4>
                           
@@ -291,7 +278,7 @@ const AllMembers = () => {
                               {formatRole(member.role || 'member')}
                             </span>
                             <span className="text-xs text-gray-500">
-                              {formatDate(member.joinDate || member.created_at)}
+                              {member.year || 'N/A'}
                             </span>
                           </div>
 
@@ -320,9 +307,9 @@ const AllMembers = () => {
 
                           {/* Social Links */}
                           <div className="flex justify-center gap-2 mt-auto">
-                            {(member.profiles?.github_url || member.github) && (
+                            {((member as any).profiles?.github_url || member.github) && (
                               <motion.a
-                                href={member.profiles?.github_url || member.github}
+                                href={(member as any).profiles?.github_url || member.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.1 }}
@@ -333,9 +320,9 @@ const AllMembers = () => {
                               </motion.a>
                             )}
                             
-                            {(member.profiles?.linkedin_url || member.linkedin) && (
+                            {((member as any).profiles?.linkedin_url || member.linkedin) && (
                               <motion.a
-                                href={member.profiles?.linkedin_url || member.linkedin}
+                                href={(member as any).profiles?.linkedin_url || member.linkedin}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.1 }}
@@ -346,9 +333,9 @@ const AllMembers = () => {
                               </motion.a>
                             )}
                             
-                            {(member.profiles?.email || member.email) && (
+                            {((member as any).profiles?.email || member.email) && (
                               <motion.a
-                                href={`mailto:${member.profiles?.email || member.email}`}
+                                href={`mailto:${(member as any).profiles?.email || member.email}`}
                                 whileHover={{ scale: 1.1 }}
                                 onClick={(e) => e.stopPropagation()}
                                 className="w-6 h-6 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-600 transition-all duration-300"
@@ -363,7 +350,7 @@ const AllMembers = () => {
                       <>
                         {/* List View */}
                         <div className={`w-16 h-16 bg-gradient-to-br ${departmentGradient} rounded-lg flex items-center justify-center text-lg font-bold text-white mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative`}>
-                          {(member.profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
+                          {((member as any).profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
                           
                           {isJack026 && (
                             <motion.div
@@ -383,7 +370,7 @@ const AllMembers = () => {
                         <div className="flex-1 mr-4">
                           <div className="flex items-center gap-3 mb-1">
                             <h4 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
-                              {member.profiles?.full_name || member.name || 'Unknown'}
+                              {(member as any).profiles?.full_name || member.name || 'Unknown'}
                               {isJack026 && <span className="ml-2 text-sm">🌟</span>}
                             </h4>
                             <span className={`text-sm font-semibold ${getRoleColor(member.role || 'member')}`}>
@@ -407,7 +394,7 @@ const AllMembers = () => {
                             </div>
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              Joined {formatDate(member.joinDate || member.created_at)}
+                              {member.year || 'N/A'}
                             </div>
                             <div className="flex items-center gap-1">
                               <Users className="w-3 h-3" />
@@ -433,9 +420,9 @@ const AllMembers = () => {
                         </div>
 
                         <div className="flex items-center gap-2">
-                          {(member.profiles?.github_url || member.github) && (
+                          {((member as any).profiles?.github_url || member.github) && (
                             <motion.a
-                              href={member.profiles?.github_url || member.github}
+                              href={(member as any).profiles?.github_url || member.github}
                               target="_blank"
                               rel="noopener noreferrer"
                               whileHover={{ scale: 1.1 }}
