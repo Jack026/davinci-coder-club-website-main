@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Star, ExternalLink, Github, Eye, Code, Trophy, Crown, Zap } from 'lucide-react'
 
 const FeaturedProjects = () => {
-  const [featuredProjects, setFeaturedProjects] = useState([])
-
+  // Move sampleFeaturedProjects BEFORE useState
   const sampleFeaturedProjects = [
     {
       id: 'featured-1',
@@ -55,9 +54,8 @@ const FeaturedProjects = () => {
     }
   ]
 
-  useEffect(() => {
-    setFeaturedProjects(sampleFeaturedProjects)
-  }, [])
+  // Now initialize useState with the data (no useEffect needed)
+  const [featuredProjects] = useState(sampleFeaturedProjects)
 
   return (
     <section className="py-16 md:py-24 bg-bg-primary relative overflow-hidden">
