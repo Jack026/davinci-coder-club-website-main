@@ -9,16 +9,9 @@ const InteractiveMap = () => {
 
   const campusInfo = {
     name: 'Assam Downtown University',
-    address: 'Panikhaiti, Guwahati, Assam 781026',
-    coordinates: '26.1158° N, 91.7086° E',
+    address: 'Panikhaiti, Guwahati, Assam 781026, India',
+    coordinates: '26.1158,91.7086',
     landmark: 'Near Lokhra Chariali, Opposite to Brahmaputra River'
-  }
-
-  const officeDetails = {
-    location: 'Computer Science Department',
-    room: 'Room CS-201, 2nd Floor',
-    building: 'Academic Block A',
-    hours: 'Mon-Fri: 9 AM - 6 PM, Sat: 10 AM - 4 PM'
   }
 
   const transportOptions = [
@@ -63,13 +56,6 @@ const InteractiveMap = () => {
     }
   ]
 
-  const quickDirections = [
-    { step: 1, title: 'Enter Campus', description: 'Show ID at main gate security' },
-    { step: 2, title: 'Find Block A', description: 'Academic Block A is the main building' },
-    { step: 3, title: 'Go to 2nd Floor', description: 'Take elevator or stairs to 2nd floor' },
-    { step: 4, title: 'Room CS-201', description: 'Jack026\'s office - last room on the right' }
-  ]
-
   return (
     <section className="py-20 bg-bg-tertiary">
       <div className="container mx-auto px-4 lg:px-8">
@@ -90,7 +76,7 @@ const InteractiveMap = () => {
           </p>
         </motion.div>
 
-        {/* Map Container */}
+        {/* REAL Google Maps Embed */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -98,94 +84,81 @@ const InteractiveMap = () => {
           viewport={{ once: true }}
           className="relative rounded-2xl overflow-hidden shadow-2xl mb-12"
         >
-          {/* Map Placeholder - In a real app, this would be an actual map */}
-          <div className="relative h-96 bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 flex items-center justify-center">
-            {/* Simulated Map Background */}
-            <div className="absolute inset-0 opacity-20">
-              <div className="w-full h-full bg-[url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Cpath d="M0,0 L50,50 L100,0 L100,100 L0,100 Z" fill="%23ffffff" opacity="0.1"/%3E%3C/svg%3E')] bg-repeat opacity-30" />
-            </div>
+          {/* Real Interactive Google Map */}
+          <div className="relative h-96 md:h-[500px] lg:h-[600px]">
+            <iframe
+src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.542657!2d91.8614645!3d26.2017968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x375af77400000001%3A0xfa44ca580f29ec15!2sAssam%20down%20town%20University!5e0!3m2!1sen!2sin!4v${Date.now()}!5m2!1sen!2sin`}
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Assam Downtown University Location"
+              className="rounded-2xl"
+            />
             
-            {/* Map Overlay with Campus Info */}
+            {/* Overlay Information */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="absolute top-6 left-6 bg-glass backdrop-blur-xl border border-white/15 rounded-2xl p-8 max-w-md z-10"
+              className="absolute top-6 left-6 max-w-sm z-10 rounded-2xl p-6"
+              style={{
+                background: 'rgba(0, 0, 0, 0.8)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.15)',
+              }}
             >
               <div className="flex justify-between items-center mb-4">
-                <h4 className="text-xl font-bold text-white font-display">Our Location</h4>
+                <h4 className="text-lg font-bold text-white">Our Location</h4>
                 <div className="flex items-center gap-1 text-xs text-green-400 font-semibold">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  Jack026 Available Now
+                  Available Now
                 </div>
               </div>
 
-              <p className="text-gray-300 mb-6 leading-relaxed">
-                We're located in the heart of ADTU campus. Come visit us for face-to-face 
-                discussions, project collaboration, or just to say hi!
+              <p className="text-gray-300 mb-4 text-sm leading-relaxed">
+                Located in the heart of ADTU campus. Click the map to get directions or use the buttons below.
               </p>
 
-              <div className="space-y-3 mb-6">
+              <div className="space-y-2 mb-4">
                 <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <MapPin className="w-4 h-4 text-primary-500" />
-                  <span>{campusInfo.address}</span>
+                  <MapPin className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                  <span className="text-xs">{campusInfo.address}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <Clock className="w-4 h-4 text-green-500" />
-                  <span>{officeDetails.hours}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-400">
-                  <Phone className="w-4 h-4 text-blue-500" />
-                  <span>+91 87654 32109 (Jack026 Direct)</span>
+                  <Clock className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span className="text-xs">Mon-Fri: 9 AM - 6 PM</span>
                 </div>
               </div>
 
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <motion.a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(campusInfo.address)}`}
-                  target="_blank"
+href={`https://www.google.com/maps/dir/23.8800036,91.3607894/${encodeURIComponent('Assam down town University, Sankar Madhab Path, Gandhi Nagar, Panikhaiti, Guwahati, Assam')}@25.0383443,90.6448208,8z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x375af77400000001:0xfa44ca580f29ec15!2m2!1d91.8614645!2d26.2017968?entry=ttu`}
+target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex-1 bg-primary-500 text-white py-3 px-4 rounded-lg font-semibold text-center hover:bg-primary-600 transition-colors duration-300 flex items-center justify-center gap-2"
+                  className="flex-1 bg-primary-500 text-white py-2 px-3 rounded-lg font-medium text-xs text-center hover:bg-primary-600 transition-colors duration-300 flex items-center justify-center gap-1"
                 >
-                  <Navigation className="w-4 h-4" />
-                  Get Directions
+                  <Navigation className="w-3 h-3" />
+                  Directions
                 </motion.a>
                 <motion.a
                   href="tel:+918765432109"
-                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-4 py-3 bg-glass-strong border border-white/10 text-gray-300 rounded-lg hover:bg-glass hover:text-white hover:border-primary-500 transition-all duration-300 flex items-center justify-center"
+                  className="px-3 py-2 rounded-lg transition-all duration-300 flex items-center justify-center text-gray-300 hover:text-white"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                  }}
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-3 h-3" />
                 </motion.a>
               </div>
             </motion.div>
-
-            {/* Interactive Map Marker */}
-            <motion.div
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-              animate={{ y: [-5, 5, -5] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className="relative">
-                <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center text-white shadow-lg">
-                  <MapPin className="w-6 h-6" />
-                </div>
-                <motion.div
-                  className="absolute inset-0 w-12 h-12 bg-red-500 rounded-full opacity-30"
-                  animate={{ scale: [1, 1.5, 1] }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                />
-              </div>
-            </motion.div>
-
-            {/* Campus Boundary Indicator */}
-            <div className="absolute bottom-6 right-6 bg-glass backdrop-blur-xl border border-white/15 rounded-lg p-4">
-              <div className="text-xs text-gray-400 mb-1">Campus Coordinates</div>
-              <div className="text-sm font-mono text-white">{campusInfo.coordinates}</div>
-            </div>
           </div>
         </motion.div>
 
@@ -203,7 +176,13 @@ const InteractiveMap = () => {
 
           {/* Transport Tabs */}
           <div className="flex justify-center mb-8">
-            <div className="bg-glass border border-white/10 rounded-lg p-2 flex gap-2">
+            <div 
+              className="p-2 flex gap-2 rounded-lg flex-wrap justify-center"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
               {transportOptions.map((option) => (
                 <motion.button
                   key={option.id}
@@ -213,7 +192,7 @@ const InteractiveMap = () => {
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
                     activeTransport === option.id
                       ? 'bg-primary-500 text-white'
-                      : 'text-gray-400 hover:text-white hover:bg-glass-strong'
+                      : 'text-gray-400 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   <option.icon className="w-4 h-4" />
@@ -229,7 +208,12 @@ const InteractiveMap = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-glass backdrop-blur-xl border border-white/10 rounded-2xl p-8"
+            className="rounded-2xl p-8"
+            style={{
+              background: 'rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+            }}
           >
             {transportOptions.map((option) => {
               if (option.id !== activeTransport) return null
@@ -262,23 +246,43 @@ const InteractiveMap = () => {
                     </div>
 
                     <div>
-                      <h5 className="text-lg font-semibold text-white mb-4">Additional Info</h5>
-                      <div className="bg-glass-strong border border-white/10 rounded-lg p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Car className="w-5 h-5 text-green-500" />
-                          <span className="text-gray-300">{option.parking}</span>
-                        </div>
-                        <div className="text-sm text-gray-400 mb-4">
-                          Estimated cost varies by transport mode. Contact Jack026 for specific guidance.
-                        </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
+                      <h5 className="text-lg font-semibold text-white mb-4">Quick Actions</h5>
+                      <div className="space-y-3">
+                        <motion.a
+href={`https://www.google.com/maps/dir/23.8800036,91.3607894/${encodeURIComponent('Assam down town University, Sankar Madhab Path, Gandhi Nagar, Panikhaiti, Guwahati, Assam')}?travelmode=${option.id === 'car' ? 'driving' : option.id === 'bus' ? 'transit' : option.id === 'train' ? 'transit' : 'driving'}`}
+target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                           className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 px-4 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                         >
                           <ExternalLink className="w-4 h-4" />
-                          Get Live Directions
-                        </motion.button>
+                          Get Live Directions ({option.title})
+                        </motion.a>
+                        
+                        <motion.a
+href={`https://www.google.com/maps/dir/?api=1&origin=23.8800036,91.3607894&destination=${encodeURIComponent('Assam down town University, Sankar Madhab Path, Gandhi Nagar, Panikhaiti, Guwahati, Assam')}`}
+target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full bg-primary-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-primary-600 transition-all duration-300 flex items-center justify-center gap-2"
+                        >
+                          <MapPin className="w-4 h-4" />
+                          View on Google Maps
+                        </motion.a>
+                      </div>
+                      
+                      <div className="mt-4 p-3 rounded-lg text-sm text-gray-400"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                        }}
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <Car className="w-4 h-4 text-green-500" />
+                          <span className="text-gray-300">{option.parking}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -288,54 +292,67 @@ const InteractiveMap = () => {
           </motion.div>
         </motion.div>
 
-        {/* Campus Navigation Helper */}
+        {/* Quick Contact Section */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
           viewport={{ once: true }}
-          className="bg-glass backdrop-blur-xl border border-white/10 rounded-2xl p-10"
+          className="text-center"
         >
-          <h3 className="text-2xl font-bold text-white mb-8 text-center font-display">
-            Finding Jack026's Office
-          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <motion.a
+href={`https://www.google.com/maps/dir/?api=1&origin=23.8800036,91.3607894&destination=${encodeURIComponent('Assam down town University, Sankar Madhab Path, Gandhi Nagar, Panikhaiti, Guwahati, Assam')}`}
+target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-300"
+              style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
+              <Navigation className="w-8 h-8 text-primary-400 mx-auto mb-3" />
+              <h4 className="text-lg font-semibold text-white mb-2">Get Directions</h4>
+              <p className="text-gray-400 text-sm">Live navigation to campus</p>
+            </motion.a>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {quickDirections.map((direction, index) => (
-              <motion.div
-                key={direction.step}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                whileHover={{ y: -5, scale: 1.05 }}
-                className="text-center p-6 bg-glass-light border border-white/5 rounded-xl hover:bg-glass-strong transition-all duration-300"
-              >
-                <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4 text-lg font-bold text-white">
-                  {direction.step}
-                </div>
-                <h4 className="text-lg font-semibold text-white mb-2 font-display">
-                  {direction.title}
-                </h4>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {direction.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="text-center mt-8">
-            <p className="text-gray-300 mb-4">
-              Lost on campus? Call <span className="text-primary-400 font-semibold">Jack026</span> directly!
-            </p>
             <motion.a
               href="tel:+918765432109"
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center gap-2 bg-green-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-600 transition-colors duration-300"
+              className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-300"
+              style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
             >
-              <Phone className="w-4 h-4" />
-              Call for Campus Directions
+              <Phone className="w-8 h-8 text-green-400 mx-auto mb-3" />
+              <h4 className="text-lg font-semibold text-white mb-2">Call Jack026</h4>
+              <p className="text-gray-400 text-sm">Direct line for assistance</p>
+            </motion.a>
+
+            <motion.a
+              href="https://wa.me/918765432109"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, y: -5 }}
+              whileTap={{ scale: 0.95 }}
+              className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-300"
+              style={{
+                background: 'rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
+              <div className="w-8 h-8 bg-green-500 rounded-full mx-auto mb-3 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">WA</span>
+              </div>
+              <h4 className="text-lg font-semibold text-white mb-2">WhatsApp</h4>
+              <p className="text-gray-400 text-sm">Quick chat support</p>
             </motion.a>
           </div>
         </motion.div>

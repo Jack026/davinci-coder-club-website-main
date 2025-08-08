@@ -317,6 +317,7 @@ const Hero = () => {
               }}
             />
           )}
+
           {/* Mobile Responsive Spear Base */}
           <motion.div
             className="absolute -bottom-6 sm:-bottom-8 md:-bottom-12"
@@ -595,10 +596,11 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           >
-            <motion.button
+            <motion.a
+              href="https://forms.gle/ccpzcvfENt6zDoP9A" // Replace with your form page route
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.98 }}
-              className="group relative w-full sm:w-auto px-4 sm:px-6 md:px-8 lg:px-12 py-3 sm:py-4 rounded-lg text-black font-semibold text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden border-2 border-cyan-400/50"
+              className="group relative w-full sm:w-auto px-4 sm:px-6 md:px-8 lg:px-12 py-3 sm:py-4 rounded-lg text-black font-semibold text-xs sm:text-sm md:text-base lg:text-lg overflow-hidden border-2 border-cyan-400/50 cursor-pointer"
               style={{
                 background: `linear-gradient(135deg, rgba(0,255,255,0.95), rgba(138,43,226,0.85), rgba(75,0,130,0.9))`,
                 backdropFilter: 'blur(10px)',
@@ -612,7 +614,7 @@ const Hero = () => {
                 ./join_revolution
                 <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5" />
               </span>
-            </motion.button>
+            </motion.a>
 
             <motion.button
               whileHover={{ scale: 1.05, y: -3 }}

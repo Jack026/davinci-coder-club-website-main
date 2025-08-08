@@ -53,9 +53,10 @@ const Navigation = () => {
         />
 
         <div className="container mx-auto px-4 lg:px-8 relative z-10">
-          <div className="flex items-center justify-between">
+          {/* DESKTOP Layout */}
+          <div className="hidden md:flex items-center justify-between">
             
-            {/* Da-Vinci Coder Club Logo as Home Button */}
+            {/* FIXED Club Logo - Better Visibility */}
             <Link href="/" className="flex items-center gap-4 z-50 relative group">
               <motion.div
                 whileHover={{ scale: 1.05 }}
@@ -63,24 +64,32 @@ const Navigation = () => {
                 transition={{ duration: 0.3, type: "spring", stiffness: 400 }}
                 className="relative"
               >
-                {/* Using actual Coder Club logo */}
-                <div className="w-12 h-12 bg-white rounded-xl p-1 shadow-lg">
+                {/* ENHANCED Club Logo Container for Better Visibility */}
+                <div className="w-14 h-14 bg-white rounded-xl p-2 shadow-xl border-2 border-gray-200/50">
                   <Image
-                    src="/CODER CLUB.png"
+                    src="/club.png"
                     alt="Da-Vinci Coder Club"
-                    width={48}
-                    height={48}
+                    width={56}
+                    height={56}
                     className="w-full h-full object-contain rounded-lg"
                     priority
+                    style={{
+                      filter: 'contrast(1.1) brightness(1.05)',
+                    }}
                   />
                 </div>
+                {/* Enhanced glow effect for visibility */}
+                <div className="absolute inset-0 bg-white/20 rounded-xl blur-sm animate-pulse opacity-50" />
               </motion.div>
               
-              <div className="hidden sm:flex flex-col">
+              <div className="flex flex-col">
                 <motion.span 
                   className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 leading-tight"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.2 }}
+                  style={{
+                    filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.3))',
+                  }}
                 >
                   Da-Vinci Coder Club
                 </motion.span>
@@ -90,7 +99,7 @@ const Navigation = () => {
               </div>
             </Link>
 
-            {/* Clean Desktop Navigation */}
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href
@@ -111,7 +120,6 @@ const Navigation = () => {
                     >
                       <span>{link.label}</span>
                       
-                      {/* Active indicator */}
                       {isActive && (
                         <motion.div
                           layoutId="activeTab"
@@ -121,7 +129,6 @@ const Navigation = () => {
                         />
                       )}
                       
-                      {/* Hover effect */}
                       <AnimatePresence>
                         {activeHover === link.href && !isActive && (
                           <motion.div
@@ -138,45 +145,102 @@ const Navigation = () => {
               })}
             </div>
 
-            {/* ADTU University Logo - Bigger & Cleaner Border */}
-<div className="flex items-center gap-3">
-  <motion.div
-    whileHover={{ scale: 1.06 }}
-    className="flex items-center bg-gray-800/20 backdrop-blur-xl px-4 py-2 rounded-xl border border-gray-500/20 hover:border-purple-500/30 transition-all duration-300"
-  >
-    {/* Larger ADTU logo */}
-    <div className="h-12 w-auto bg-white rounded-lg p-2 flex items-center">
-      <Image
-        src="/adtu_updated_logo.png"
-        alt="Assam Down Town University"
-        width={130} // Bigger width
-        height={48} // Bigger height
-        className="h-full w-auto object-contain"
-        style={{ maxHeight: '44px' }} // Taller for visibility
-      />
-    </div>
-  </motion.div>
+            {/* FIXED ADTU Logo - NO BACKGROUND BORDER */}
+            <Link href="/" className="group">
+              <motion.div
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center px-6 py-3 rounded-2xl transition-all duration-300"
+                // REMOVED: bg-gray-800/20 backdrop-blur-xl - No background border
+              >
+                {/* Clean ADTU logo - No Background Border */}
+                <div className="h-14 w-auto bg-white rounded-xl p-2 flex items-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <Image
+                    src="/adtu_updated_logo.png"
+                    alt="Assam Down Town University - Go Home"
+                    width={160}
+                    height={56}
+                    className="h-full w-auto object-contain"
+                    style={{ maxHeight: '52px' }}
+                  />
+                </div>
+              </motion.div>
+            </Link>
+          </div>
 
-  {/* Mobile Menu Button */}
-  <motion.button
-    whileTap={{ scale: 0.9 }}
-    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-    className="md:hidden p-3 text-white hover:bg-gray-800/50 rounded-lg transition-all duration-300"
-  >
-    <motion.div
-      animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-    </motion.div>
-  </motion.button>
-</div>
+          {/* MOBILE Layout */}
+          <div className="flex md:hidden items-center justify-between w-full relative">
+            
+            {/* FIXED Mobile Club Logo - Better Visibility */}
+            <Link href="/" className="flex items-center gap-2 z-50 relative group flex-shrink-0">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.3, type: "spring", stiffness: 400 }}
+                className="relative"
+              >
+                {/* ENHANCED Mobile Club Logo for Better Visibility */}
+                <div className="w-12 h-12 bg-white rounded-xl p-1.5 shadow-lg border border-gray-200/30">
+                  <Image
+                    src="/club.png"
+                    alt="Da-Vinci Coder Club"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-contain rounded-lg"
+                    priority
+                    style={{
+                      filter: 'contrast(1.15) brightness(1.1)',
+                    }}
+                  />
+                </div>
+                {/* Visibility enhancement glow */}
+                <div className="absolute inset-0 bg-white/15 rounded-xl blur-sm animate-pulse opacity-40" />
+              </motion.div>
+            </Link>
 
+            {/* FIXED Mobile ADTU Logo - NO BACKGROUND BORDER */}
+            <Link 
+              href="/" 
+              className="absolute left-1/2 transform -translate-x-1/2 group"
+              style={{ zIndex: 10 }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center px-4 py-2 rounded-xl transition-all duration-300"
+                // REMOVED: bg-gray-800/25 backdrop-blur-xl - No background border
+              >
+                {/* Clean Mobile ADTU Logo - No Background Border */}
+                <div className="h-12 w-auto bg-white rounded-lg p-1.5 flex items-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <Image
+                    src="/adtu_updated_logo.png"
+                    alt="ADTU - Go Home"
+                    width={130}
+                    height={48}
+                    className="h-full w-auto object-contain"
+                    style={{ maxHeight: '42px' }}
+                  />
+                </div>
+              </motion.div>
+            </Link>
 
+            {/* Mobile Menu Button */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-3 text-white hover:bg-gray-800/50 rounded-lg transition-all duration-300 flex-shrink-0 z-20"
+            >
+              <motion.div
+                animate={{ rotate: isMobileMenuOpen ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </motion.div>
+            </motion.button>
           </div>
         </div>
 
-        {/* Clean Mobile Menu */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -209,31 +273,44 @@ const Navigation = () => {
                           <span className="font-medium">{link.label}</span>
                           
                           {isActive && (
-                            <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full" />
+                            <div className="ml-auto w-2 h-2 bg-purple-500 rounded-full animate-pulse" />
                           )}
                         </Link>
                       </motion.div>
                     )
                   })}
                   
-                  {/* Mobile University Logo - Properly sized */}
+                  {/* FIXED Mobile Menu ADTU Logo - Clean Design */}
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: navLinks.length * 0.05 + 0.1 }}
-                    className="mt-3 p-3 bg-gray-800/30 rounded-lg border border-gray-700/30"
+                    className="mt-3"
                   >
-                    <div className="flex items-center justify-center">
-                      <div className="h-10 w-auto bg-white rounded-lg p-1">
-                        <Image
-                          src="/adtu_updated_logo.jpg"
-                          alt="Assam Down Town University"
-                          width={120}
-                          height={40}
-                          className="h-full w-auto object-contain"
-                        />
+                    <Link 
+                      href="/"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="block p-4 rounded-xl transition-all duration-300 group hover:bg-gray-800/20"
+                      // REMOVED: bg-gray-800/30 border border-gray-700/30 - Clean design
+                    >
+                      <div className="flex items-center justify-center">
+                        {/* Clean Mobile Menu ADTU Logo */}
+                        <div className="h-14 w-auto bg-white rounded-xl p-2 shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                          <Image
+                            src="/adtu_updated_logo.png"
+                            alt="Assam Down Town University - Go Home"
+                            width={150}
+                            height={56}
+                            className="h-full w-auto object-contain"
+                          />
+                        </div>
                       </div>
-                    </div>
+                      <div className="text-center mt-2">
+                        <span className="text-xs text-gray-400 font-medium group-hover:text-gray-300 transition-colors">
+                          Click to go home
+                        </span>
+                      </div>
+                    </Link>
                   </motion.div>
                 </div>
               </div>

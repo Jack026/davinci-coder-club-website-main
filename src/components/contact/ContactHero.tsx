@@ -167,64 +167,6 @@ const ContactHero = () => {
             <strong className="text-primary-400">Jack026</strong> and the team - we'd love to hear from you!
           </motion.p>
 
-          {/* Jack026 Personal Welcome */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-glass backdrop-blur-xl border border-primary-500/30 bg-primary-500/5 rounded-2xl p-8 mb-16 inline-block relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-secondary-500 animate-pulse" />
-            
-            {/* Crown Icon for Jack026 */}
-            <div className="absolute top-4 right-4">
-              <Crown className="w-8 h-8 text-yellow-500 animate-bounce" />
-            </div>
-            
-            <div className="flex items-center justify-center gap-6 flex-wrap">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-2xl font-bold text-white relative">
-                  J
-                  <motion.div
-                    className="absolute inset-0 rounded-full border-2 border-dashed border-yellow-500"
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                  />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-2xl font-bold text-white font-display">
-                    Hey Jack026! 👋
-                  </h3>
-                  <p className="text-primary-400 font-semibold">
-                    Lead Developer & Contact Coordinator
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-px h-12 bg-white/20 hidden sm:block" />
-
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-green-500 font-display">
-                    Online
-                  </div>
-                  <div className="text-sm text-gray-400">Status</div>
-                </div>
-              </div>
-            </div>
-
-            <p className="text-lg text-gray-300 mt-6">
-              You're at the contact hub! Whether it's for support, collaborations, or just a friendly chat - 
-              we're here and ready to help. Your messages get priority attention!
-            </p>
-          </motion.div>
 
           {/* Live Status Indicators */}
           <motion.div
