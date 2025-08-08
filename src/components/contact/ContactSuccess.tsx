@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, X, Mail, Phone, MessageSquare, Clock, Crown } from 'lucide-react'
-import { useContact } from '@/contexts/ContactContext'
+import { useContact } from 'contexts/ContactContext'
 
 const ContactSuccess = () => {
   const { state, dispatch } = useContact()

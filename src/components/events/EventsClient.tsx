@@ -6,7 +6,6 @@ import Footer from '@/components/Footer'
 import { useState, useEffect } from 'react'
 import ScrollToTop from '@/components/ScrollToTop'
 import EventsHero from '@/components/events/EventsHero'
-import EventFilters from '@/components/events/EventFilters'
 import FeaturedEvents from '@/components/events/FeaturedEvents'
 import EventsGrid from '@/components/events/EventsGrid'
 import EventCalendar from '@/components/events/EventCalendar'
@@ -19,7 +18,6 @@ export default function EventsClient() {
       <EventsProvider>
         <Navigation />
         <EventsHero />
-        <EventFilters />
         <FeaturedEvents />
         <EventsGrid />
         <EventCalendar />

@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { MessageCircle, Phone, Clock, Users, Zap, Crown } from 'lucide-react'
 import Link from 'next/link'
-import { useContact } from '@/contexts/ContactContext'
+import { useContact } from 'contexts/ContactContext'
 
 const ContactHero = () => {
   const { state } = useContact()

@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Github, Linkedin, Mail, ExternalLink, Crown, Star, Users, Code, Trophy, Calendar, MapPin, Award } from 'lucide-react'
-import { useTeam } from '@/contexts/TeamContext'
+import { useTeam } from 'contexts/TeamContext'
 
 const MemberModal = () => {
   const { state, dispatch } = useTeam()

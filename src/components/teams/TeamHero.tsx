@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { Users, Star, Code, Trophy, TrendingUp, Crown } from 'lucide-react'
 import Link from 'next/link'
-import { useTeam } from '@/contexts/TeamContext'
+import { useTeam } from 'contexts/TeamContext'
 
 const TeamHero = () => {
   const { state } = useTeam()

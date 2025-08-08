@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { Star, Github, Linkedin, Mail, Award, Users, Code, Zap } from 'lucide-react'
-import { useTeam } from '@/contexts/TeamContext'
+import { useTeam } from 'contexts/TeamContext'
 
 const CoreTeam = () => {
   const { state, dispatch } = useTeam()

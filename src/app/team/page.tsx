@@ -1,20 +1,5 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import { Metadata } from 'next'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
-import TeamHero from '@/components/team/TeamHero'
-import TeamFilters from '@/components/team/TeamFilters'
-import MemberSpotlight from '@/components/team/MemberSpotlight'
-import LeadershipTeam from '@/components/team/LeadershipTeam'
-import CoreTeam from '@/components/team/CoreTeam'
-import AllMembers from '@/components/team/AllMembers'
-import TeamStatistics from '@/components/team/TeamStatistics'
-import JoinTeamCTA from '@/components/team/JoinTeamCTA'
-import MemberModal from '@/components/team/MemberModal'
-import { TeamProvider } from '@/contexts/TeamContext'
+import TeamClient from '@/components/teams/TeamClient'
 
 export const metadata: Metadata = {
   title: 'Meet Our Team - Da-Vinci Coder Club | The Minds Behind the Magic',
@@ -34,22 +19,5 @@ export const metadata: Metadata = {
 }
 
 export default function TeamPage() {
-  return (
-    <main className="min-h-screen bg-bg-primary">
-      <TeamProvider>
-        <Navigation />
-        <TeamHero />
-        <TeamFilters />
-        <MemberSpotlight />
-        <LeadershipTeam />
-        <CoreTeam />
-        <AllMembers />
-        <TeamStatistics />
-        <JoinTeamCTA />
-        <MemberModal />
-        <Footer />
-        <ScrollToTop />
-      </TeamProvider>
-    </main>
-  )
+  return <TeamClient/>
 }

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Star, Crown, Award, Github, Linkedin, Mail, ExternalLink, Users, Code, Trophy } from 'lucide-react'
-import { useTeam } from '@/contexts/TeamContext'
+import { useTeam } from 'contexts/TeamContext'
 
 const MemberSpotlight = () => {
   const { state, dispatch } = useTeam()

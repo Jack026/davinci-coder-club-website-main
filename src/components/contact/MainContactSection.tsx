@@ -5,7 +5,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Send, User, Mail, Phone, MessageSquare, AlertTriangle, CheckCircle, Loader, Crown } from 'lucide-react'
-import { useContact } from '@/contexts/ContactContext'
+import { useContact } from 'contexts/ContactContext'
 import { createClient } from '@/lib/supabase/client'
 
 const MainContactSection = () => {

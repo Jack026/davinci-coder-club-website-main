@@ -1,19 +1,7 @@
-'use client'
 
-import { useState, useEffect } from 'react'
 import { Metadata } from 'next'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollToTop'
-import ContactHero from '@/components/contact/ContactHero'
-import ContactOptions from '@/components/contact/ContactOptions'
-import MainContactSection from '@/components/contact/MainContactSection'
-import InteractiveMap from '@/components/contact/InteractiveMap'
-import ContactFAQ from '@/components/contact/ContactFAQ'
-import QuickContactCTA from '@/components/contact/QuickContactCTA'
-import LiveChatWidget from '@/components/contact/LiveChatWidget'
-import ContactSuccess from '@/components/contact/ContactSuccess'
-import { ContactProvider } from '@/contexts/ContactContext'
+import ContactClient from '@/components/contact/ContactClient'
+
 
 export const metadata: Metadata = {
   title: 'Contact Us - Da-Vinci Coder Club | Connect with Jack026 & Our Team',
@@ -33,21 +21,5 @@ export const metadata: Metadata = {
 }
 
 export default function ContactPage() {
-  return (
-    <main className="min-h-screen bg-bg-primary">
-      <ContactProvider>
-        <Navigation />
-        <ContactHero />
-        <ContactOptions />
-        <MainContactSection />
-        <InteractiveMap />
-        <ContactFAQ />
-        <QuickContactCTA />
-        <LiveChatWidget />
-        <ContactSuccess />
-        <Footer />
-        <ScrollToTop />
-      </ContactProvider>
-    </main>
-  )
+  return <ContactClient/>
 }

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Search, Filter, SortAsc, Grid3x3, List, X, ChevronDown, Users, Star } from 'lucide-react'
-import { useTeam } from '@/contexts/TeamContext'
+import { useTeam } from 'contexts/TeamContext'
 
 const TeamFilters = () => {
   const { state, dispatch } = useTeam()
