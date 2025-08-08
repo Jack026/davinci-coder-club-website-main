@@ -1,8 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { BookOpen, FileText, Wrench, Trophy, Download, Newspaper, ArrowRight, TrendingUp, Crown, Zap } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { motion } from 'framer-motion'
+import { ArrowRight, BookOpen, Crown, Download, FileText, Newspaper, TrendingUp, Trophy, Wrench, Zap } from 'lucide-react'
 
 const ResourceCategories = () => {
   const { dispatch } = useResources()

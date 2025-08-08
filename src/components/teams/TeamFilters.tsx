@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, SortAsc, Grid3x3, List, X, ChevronDown, Users, Star } from 'lucide-react'
 import { useTeam } from 'contexts/TeamContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronDown, Filter, Grid3x3, List, Search, SortAsc, X } from 'lucide-react'
+import { useState } from 'react'
 
 const TeamFilters = () => {
   const { state, dispatch } = useTeam()
@@ -91,11 +91,11 @@ const TeamFilters = () => {
     { key: 'leadership', label: 'Leadership', value: 'president,vice-president,secretary,treasurer', icon: '👑' },
     { key: 'tech-leads', label: 'Tech Leads', value: 'tech-lead,design-lead', icon: '🚀' },
     { key: 'core-team', label: 'Core Team', value: 'core', icon: '⭐' },
-    { key: 'jack026', label: 'Jack026', value: 'jack026', icon: '🔥' }
+    { key: 'Jack026', label: 'Jack026', value: 'Jack026', icon: '🔥' }
   ]
 
   const handleQuickFilter = (filterKey: string, filterValue: string) => {
-    if (filterKey === 'jack026') {
+    if (filterKey === 'Jack026') {
       // Special handling for Jack026 filter
       updateFilters({ search: 'Jack026' })
     } else {
@@ -157,9 +157,9 @@ const TeamFilters = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => handleQuickFilter('jack026', 'jack026')}
+            onClick={() => handleQuickFilter('Jack026', 'Jack026')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-300 text-sm font-medium ${
-              filters.search.toLowerCase().includes('jack026')
+              filters.search.toLowerCase().includes('Jack026')
                 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 border-yellow-500 text-white'
                 : 'bg-glass border-white/10 text-gray-300 hover:bg-glass-strong'
             }`}

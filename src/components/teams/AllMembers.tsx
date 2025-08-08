@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Github, Linkedin, Mail, Star, Users, Calendar, MapPin } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useTeam } from 'contexts/TeamContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Calendar, Github, Linkedin, Mail, MapPin, Users } from 'lucide-react'
+import { useCallback, useEffect } from 'react'
 
 // Define the Profile interface
 interface Profile {
@@ -13,7 +13,7 @@ interface Profile {
   email?: string;
   username?: string;
   avatar_url?: string;
-  is_jack026?: boolean;
+  is_Jack026?: boolean;
   github_url?: string;
   linkedin_url?: string;
   portfolio_url?: string;
@@ -39,14 +39,14 @@ const AllMembers = () => {
             email,
             username,
             avatar_url,
-            is_jack026,
+            is_Jack026,
             github_url,
             linkedin_url,
             portfolio_url
           )
         `)
         .eq('status', 'active')
-        .order('is_jack026', { ascending: false })
+        .order('is_Jack026', { ascending: false })
         .order('created_at', { ascending: false })
 
       if (error) throw error
@@ -192,8 +192,8 @@ const AllMembers = () => {
               {filteredMembers.map((member, index) => {
                 const isGridView = filters.view === 'grid'
                 const departmentGradient = getDepartmentGradient(member.department || 'Unknown')
-                // Access is_jack026 from profiles with optional chaining
-                const isJack026 = (member as any).profiles?.is_jack026 || false
+                // Access is_Jack026 from profiles with optional chaining
+                const isJack026 = (member as any).profiles?.is_Jack026 || false
 
                 return (
                   <motion.div

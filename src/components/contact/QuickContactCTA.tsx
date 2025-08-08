@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { MessageSquare, Phone, Mail, ExternalLink, Crown, Zap, Clock, Users } from 'lucide-react'
+import { Clock, Crown, ExternalLink, Mail, MessageSquare, Phone, Users, Zap } from 'lucide-react'
 
 const QuickContactCTA = () => {
   const quickActions = [
@@ -31,7 +31,7 @@ const QuickContactCTA = () => {
       description: 'Send detailed inquiries via email',
       icon: Mail,
       gradient: 'from-purple-500 to-purple-700',
-      action: 'mailto:jack026@davincicoders.club?subject=Priority%20Inquiry&body=Hi%20Jack026,%0A%0AI%20would%20like%20to%20discuss:',
+      action: 'mailto:Jack026@davincicoders.club?subject=Priority%20Inquiry&body=Hi%20Jack026,%0A%0AI%20would%20like%20to%20discuss:',
       stats: { time: '2 minutes', availability: '24/7' },
       featured: false
     },
@@ -296,7 +296,7 @@ const QuickContactCTA = () => {
 
           <div className="flex justify-center gap-4 mt-8">
             <motion.a
-              href="mailto:jack026@davincicoders.club"
+              href="mailto:Jack026@davincicoders.club"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="bg-primary-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300 flex items-center gap-2"

@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, X, Mail, Phone, MessageSquare, Clock, Crown } from 'lucide-react'
 import { useContact } from 'contexts/ContactContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { CheckCircle, Clock, Crown, Mail, MessageSquare, X } from 'lucide-react'
+import { useEffect } from 'react'
 
 const ContactSuccess = () => {
   const { state, dispatch } = useContact()

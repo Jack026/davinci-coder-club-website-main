@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, SortAsc, Grid3x3, List, X, ChevronDown, Star, Clock, TrendingUp } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronDown, Clock, Filter, Grid3x3, List, Search, SortAsc, Star, TrendingUp, X } from 'lucide-react'
+import { useState } from 'react'
 
 const ResourceFilters = () => {
   const { state, dispatch } = useResources()

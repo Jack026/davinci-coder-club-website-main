@@ -1,9 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Users, TrendingUp, Award, Code, BookOpen, Star, Calendar, MapPin } from 'lucide-react'
 import { useTeam } from 'contexts/TeamContext'
+import { motion } from 'framer-motion'
+import { Award, Calendar, Code, MapPin, Star, TrendingUp, Users } from 'lucide-react'
+import { useState } from 'react'
 
 const TeamStatistics = () => {
   const { state } = useTeam()

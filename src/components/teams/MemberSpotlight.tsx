@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Star, Crown, Award, Github, Linkedin, Mail, ExternalLink, Users, Code, Trophy } from 'lucide-react'
 import { useTeam } from 'contexts/TeamContext'
+import { motion } from 'framer-motion'
+import { Code, Crown, ExternalLink, Github, Linkedin, Mail, Star, Trophy, Users } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const MemberSpotlight = () => {
   const { state, dispatch } = useTeam()
@@ -14,7 +14,7 @@ const MemberSpotlight = () => {
   useEffect(() => {
     const mockMembers = [
       {
-        id: 'jack026',
+        id: 'Jack026',
         name: 'Jack026',
         position: 'Lead Developer & Innovation Architect',
         department: 'Computer Science',
@@ -22,10 +22,10 @@ const MemberSpotlight = () => {
         role: 'tech-lead' as const,
         skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AI/ML', 'System Design', 'Leadership'],
         bio: 'Visionary leader and full-stack developer with a passion for cutting-edge technology. Spearheads innovation initiatives and mentors fellow developers at Da-Vinci Coder Club.',
-        email: 'jack026@davincicoders.club',
-        github: 'https://github.com/jack026',
-        linkedin: 'https://linkedin.com/in/jack026',
-        portfolio: 'https://jack026.dev',
+        email: 'Jack026@davincicoders.club',
+        github: 'https://github.com/Jack026',
+        linkedin: 'https://linkedin.com/in/Jack026',
+        portfolio: 'https://Jack026.dev',
         joinDate: '2022-08-15',
         status: 'active' as const,
         achievements: [

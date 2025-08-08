@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Fira_Code } from 'next/font/google'
+import { Fira_Code, Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     'Jack026',
     'Da-Vinci coders'
   ],
-  authors: [{ name: 'Jack026', url: 'https://github.com/jack026' }],
+  authors: [{ name: 'Jack026', url: 'https://github.com/Jack026' }],
   creator: 'Da-Vinci Coder Club',
   openGraph: {
     type: 'website',

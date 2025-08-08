@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Users, Star, Code, Award, ArrowRight, Heart, Zap, Target } from 'lucide-react'
+import { ArrowRight, Award, Code, Heart, Star, Target, Users, Zap } from 'lucide-react'
 
 const JoinTeamCTA = () => {
   const benefits = [

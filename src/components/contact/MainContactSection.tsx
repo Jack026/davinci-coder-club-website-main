@@ -2,11 +2,11 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Send, User, Mail, Phone, MessageSquare, AlertTriangle, CheckCircle, Loader, Crown } from 'lucide-react'
-import { useContact } from 'contexts/ContactContext'
 import { createClient } from '@/lib/supabase/client'
+import { useContact } from 'contexts/ContactContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { CheckCircle, Loader, Mail, MessageSquare, Phone, Send, User } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const MainContactSection = () => {
   const supabase = createClient()
@@ -88,7 +88,7 @@ const MainContactSection = () => {
       })
 
       // Send notification to Jack026 (Edge Function)
-      await supabase.functions.invoke('notify-jack026', {
+      await supabase.functions.invoke('notify-Jack026', {
         body: { messageId: data[0].id, urgency: state.form.urgency }
       })
 
@@ -126,7 +126,7 @@ const MainContactSection = () => {
         { label: 'Availability', value: '24/7' },
         { label: 'Best For', value: 'Detailed inquiries' }
       ],
-      contact: 'jack026@davincicoders.club',
+      contact: 'Jack026@davincicoders.club',
       status: 'online'
     },
     {

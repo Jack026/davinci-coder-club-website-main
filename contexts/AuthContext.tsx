@@ -1,8 +1,8 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface AuthContextType {
   user: User | null
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             email: user?.email,
             full_name: user?.user_metadata?.full_name || '',
             username: user?.email?.split('@')[0] || '',
-            is_jack026: user?.email === process.env.NEXT_PUBLIC_JACK026_EMAIL
+            is_Jack026: user?.email === process.env.NEXT_PUBLIC_Jack026_EMAIL
           }])
           .select()
           .single()
@@ -105,7 +105,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await supabase.auth.signOut()
   }
 
-  const isJack026 = profile?.is_jack026 || profile?.email === process.env.NEXT_PUBLIC_JACK026_EMAIL
+  const isJack026 = profile?.is_Jack026 || profile?.email === process.env.NEXT_PUBLIC_Jack026_EMAIL
 
   return (
     <AuthContext.Provider value={{

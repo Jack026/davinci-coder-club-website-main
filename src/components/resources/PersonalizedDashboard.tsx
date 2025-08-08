@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { TrendingUp, BookOpen, Bookmark, Star, Clock, Target, Award, Zap, ChevronRight } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { motion } from 'framer-motion'
+import { Award, BookOpen, Bookmark, ChevronRight, Clock, Star, Target, TrendingUp, Zap } from 'lucide-react'
+import { useEffect } from 'react'
 
 const PersonalizedDashboard = () => {
   const { state, dispatch } = useResources()

@@ -1,8 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Star, Github, Linkedin, Mail, Award, Users, Code, Zap } from 'lucide-react'
 import { useTeam } from 'contexts/TeamContext'
+import { motion } from 'framer-motion'
+import { Award, Code, Github, Linkedin, Mail, Star, Users, Zap } from 'lucide-react'
 
 const CoreTeam = () => {
   const { state, dispatch } = useTeam()

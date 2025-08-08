@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { MapPin, Navigation, Clock, Phone, ExternalLink, Car, Bus, Train } from 'lucide-react'
+import { Bus, Car, Clock, ExternalLink, MapPin, Navigation, Phone, Train } from 'lucide-react'
+import { useState } from 'react'
 
 const InteractiveMap = () => {
   const [activeTransport, setActiveTransport] = useState('car')

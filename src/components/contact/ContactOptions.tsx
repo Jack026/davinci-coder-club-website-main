@@ -1,8 +1,8 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { MessageSquare, Phone, Users, Heart, Clock, Star, Zap, Award } from 'lucide-react'
 import { useContact } from 'contexts/ContactContext'
+import { motion } from 'framer-motion'
+import { Award, Clock, Heart, Star, Users, Zap } from 'lucide-react'
 
 const ContactOptions = () => {
   const { state, dispatch } = useContact()

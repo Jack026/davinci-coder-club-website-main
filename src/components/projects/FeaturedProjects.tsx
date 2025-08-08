@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Star, ExternalLink, Github, Eye, Code, Trophy, Crown, Zap } from 'lucide-react'
+import { Crown, ExternalLink, Eye, Github, Star, Zap } from 'lucide-react'
+import { useState } from 'react'
 
 const FeaturedProjects = () => {
   // Move sampleFeaturedProjects BEFORE useState
@@ -15,7 +15,7 @@ const FeaturedProjects = () => {
       status: 'completed',
       difficulty: 'advanced',
       technologies: ['Python', 'TensorFlow', 'React', 'Node.js'],
-      githubUrl: 'https://github.com/jack026/ai-code-assistant',
+      githubUrl: 'https://github.com/Jack026/ai-code-assistant',
       liveUrl: 'https://ai-assistant.davincicoders.club',
       creator: 'Jack026',
       isJack026Project: true,
@@ -82,12 +82,7 @@ const FeaturedProjects = () => {
           </p>
 
           {/* Jack026 Special Badge */}
-          <div className="mt-8 inline-flex items-center gap-3 bg-glass backdrop-blur-xl border border-primary-500/30 bg-primary-500/5 rounded-2xl px-6 py-3">
-            <Crown className="w-5 h-5 text-yellow-500 animate-bounce" />
-            <span className="text-primary-400 font-semibold">
-              Projects led by Jack026
-            </span>
-          </div>
+         
         </motion.div>
 
         {/* Featured Projects Grid */}

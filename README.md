@@ -180,7 +180,7 @@ NEXT_PUBLIC_SITE_URL=https://yourdomain.com
 ## 👤 Author Information
 
 **Sourav Jyoti Sahariah (Jack026)**
-- **GitHub:** [@jack026](https://github.com/jack026)
+- **GitHub:** [@Jack026](https://github.com/Jack026)
 - **LinkedIn:** [sourav-jyoti-sahariah](https://linkedin.com/in/sourav-jyoti-sahariah)
 - **Portfolio:** [souravjyotisahariah.site](https://souravjyotisahariah.site)
 

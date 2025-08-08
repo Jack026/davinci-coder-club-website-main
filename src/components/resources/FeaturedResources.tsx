@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Star, ExternalLink, Bookmark, Play, Clock, Users, Eye, Award } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { motion } from 'framer-motion'
+import { Award, Bookmark, Clock, ExternalLink, Eye, Play, Star, Users } from 'lucide-react'
+import { useEffect } from 'react'
 
 const FeaturedResources = () => {
   const { state, dispatch } = useResources()

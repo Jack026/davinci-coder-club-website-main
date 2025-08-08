@@ -1,8 +1,8 @@
 'use client'
 
+import { AnimatePresence, motion } from 'framer-motion'
+import { Clock, Crown, HelpCircle, MessageCircle, Phone, Plus, Zap } from 'lucide-react'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Minus, HelpCircle, Clock, MessageCircle, Phone, Crown, Zap } from 'lucide-react'
 
 const ContactFAQ = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)

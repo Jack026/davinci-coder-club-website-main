@@ -1,5 +1,5 @@
-import { Metadata } from 'next'
 import ProjectsClient from '@/components/projects/ProjectsClient'
+import { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Projects - Da-Vinci Coder Club | Innovation in Action',

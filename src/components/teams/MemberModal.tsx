@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, Github, Linkedin, Mail, ExternalLink, Crown, Star, Users, Code, Trophy, Calendar, MapPin, Award } from 'lucide-react'
 import { useTeam } from 'contexts/TeamContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Award, Calendar, Code, Crown, ExternalLink, Github, Linkedin, Mail, MapPin, Star, Trophy, Users, X } from 'lucide-react'
+import { useEffect } from 'react'
 
 const MemberModal = () => {
   const { state, dispatch } = useTeam()

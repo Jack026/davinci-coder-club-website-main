@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Share, Users, Award, Heart, Github, ArrowRight, Star, Crown } from 'lucide-react'
+import { ArrowRight, Award, Crown, Github, Heart, Share, Star, Users } from 'lucide-react'
 
 const ResourceContribution = () => {
   const benefits = [

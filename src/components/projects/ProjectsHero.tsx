@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Code, Star, Users, Download, Crown } from 'lucide-react'
+import { Code, Download, Star, Users } from 'lucide-react'
 import Link from 'next/link'
 
 const ProjectsHero = () => {
@@ -105,39 +105,6 @@ const ProjectsHero = () => {
             <strong className="text-primary-400">Da-Vinci Coder Club</strong> members.
           </motion.p>
 
-          {/* Jack026 Greeting */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="bg-glass backdrop-blur-xl border border-primary-500/30 bg-primary-500/5 rounded-2xl p-6 mb-12 inline-block relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-secondary-500 animate-pulse" />
-            
-            <div className="flex items-center justify-center gap-4 flex-wrap">
-              <div className="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-lg font-bold text-white relative">
-                J
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-dashed border-yellow-500"
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                />
-              </div>
-              
-              <div className="text-center sm:text-left">
-                <p className="text-lg text-gray-300">
-                  Hey{' '}
-                  <span className="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent font-bold animate-pulse">
-                    Jack026
-                  </span>
-                  ! Welcome to our innovation showcase.
-                </p>
-                <span className="block text-primary-400 mt-2 font-semibold">
-                  Ready to explore amazing projects?
-                </span>
-              </div>
-            </div>
-          </motion.div>
 
           {/* Hero Stats */}
           <motion.div

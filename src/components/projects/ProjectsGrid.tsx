@@ -1,8 +1,8 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { Star, Github, ExternalLink, Users, Download, Eye, Calendar, Tag } from 'lucide-react'
 import { useProjects } from 'contexts/ProjectsContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Calendar, Download, ExternalLink, Eye, Github, Star, Tag, Users } from 'lucide-react'
 
 const ProjectsGrid = () => {
   const { state, dispatch } = useProjects()

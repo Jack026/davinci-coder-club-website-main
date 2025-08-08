@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
-import { BookOpen, Clock, Users, Star, Award, Play, ArrowRight, Target, TrendingUp } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { motion } from 'framer-motion'
+import { ArrowRight, BookOpen, Clock, Play, Star, Target, TrendingUp } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const LearningPaths = () => {
   const { dispatch } = useResources()

@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useReducer, ReactNode } from 'react'
+import { createContext, ReactNode, useContext, useReducer } from 'react'
 
 export interface Member {
   id: string
@@ -162,10 +162,10 @@ function filterAndSortMembers(members: Member[], filters: FilterState): Member[]
   })
 
   // Always put Jack026 first if present
-  const jack026Index = filtered.findIndex(member => member.isJack026)
-  if (jack026Index > 0) {
-    const jack026 = filtered.splice(jack026Index, 1)[0]
-    filtered.unshift(jack026)
+  const Jack026Index = filtered.findIndex(member => member.isJack026)
+  if (Jack026Index > 0) {
+    const Jack026 = filtered.splice(Jack026Index, 1)[0]
+    filtered.unshift(Jack026)
   }
 
   return filtered

@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Users, Star, Code, Trophy, TrendingUp, Crown } from 'lucide-react'
-import Link from 'next/link'
 import { useTeam } from 'contexts/TeamContext'
+import { motion } from 'framer-motion'
+import { Code, Crown, Star, TrendingUp, Trophy, Users } from 'lucide-react'
+import Link from 'next/link'
 
 const TeamHero = () => {
   const { state } = useTeam()

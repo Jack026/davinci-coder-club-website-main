@@ -1,8 +1,8 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-import { Star, ExternalLink, Bookmark, Play, Clock, Users, Eye, Award, Filter, Grid3x3, List } from 'lucide-react'
 import { useResources } from 'contexts/ResourcesContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Award, Bookmark, Clock, ExternalLink, Eye, Filter, Grid3x3, List, Play, Star, Users } from 'lucide-react'
 
 const AllResources = () => {
   const { state, dispatch } = useResources()

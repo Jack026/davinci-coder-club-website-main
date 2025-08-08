@@ -1,24 +1,23 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Link from 'next/link'
-import Image from 'next/image'
-import { 
-  Code, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Github, 
-  Linkedin, 
-  Instagram, 
-  Twitter,
-  Heart,
-  MessageCircle,
-  Facebook,
-  Sparkles,
-  Zap,
-  Star
+import {
+    Code,
+    Facebook,
+    Github,
+    Heart,
+    Instagram,
+    Linkedin,
+    Mail,
+    MapPin,
+    MessageCircle,
+    Phone,
+    Sparkles,
+    Star,
+    Twitter,
+    Zap
 } from 'lucide-react'
+import Link from 'next/link'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()

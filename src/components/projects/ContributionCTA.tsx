@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { Code, Users, Trophy, Star, ArrowRight, Crown, Github, ExternalLink } from 'lucide-react'
+import { ArrowRight, Code, Crown, ExternalLink, Github, Star, Trophy, Users } from 'lucide-react'
 
 const ContributionCTA = () => {
   const features = [

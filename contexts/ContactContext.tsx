@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useReducer, ReactNode } from 'react'
+import { createContext, ReactNode, useContext, useReducer } from 'react'
 
 export interface ContactForm {
   name: string
@@ -92,10 +92,10 @@ const initialState: ContactState = {
   showSuccess: false,
   contactMethods: [
     {
-      id: 'jack026-direct',
+      id: 'Jack026-direct',
       type: 'email',
       label: 'Jack026 Direct',
-      value: 'jack026@davincicoders.adtu.ac.in',
+      value: 'Jack026@davincicoders.adtu.ac.in',
       status: 'online',
       responseTime: '2 minutes',
       availability: 'Mon-Fri 9AM-6PM',

@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { BookOpen, Code, Users, Zap, TrendingUp, Star } from 'lucide-react'
-import Link from 'next/link'
 import { useResources } from 'contexts/ResourcesContext'
+import { motion } from 'framer-motion'
+import { BookOpen, Code, Star, TrendingUp, Users, Zap } from 'lucide-react'
+import Link from 'next/link'
 
 const ResourcesHero = () => {
   const { state } = useResources()

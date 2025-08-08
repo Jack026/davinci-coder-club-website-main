@@ -1,9 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { MessageCircle, Phone, Clock, Users, Zap, Crown } from 'lucide-react'
-import Link from 'next/link'
 import { useContact } from 'contexts/ContactContext'
+import { motion } from 'framer-motion'
+import { Clock, MessageCircle, Phone, Users } from 'lucide-react'
+import Link from 'next/link'
 
 const ContactHero = () => {
   const { state } = useContact()
