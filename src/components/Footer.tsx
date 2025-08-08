@@ -2,20 +2,19 @@
 
 import { motion } from 'framer-motion'
 import {
-    Code,
-    Facebook,
-    Github,
-    Heart,
-    Instagram,
-    Linkedin,
-    Mail,
-    MapPin,
-    MessageCircle,
-    Phone,
-    Sparkles,
-    Star,
-    Twitter,
-    Zap
+  Code,
+  Facebook,
+  Github,
+  Heart,
+  Instagram,
+  Linkedin,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Sparkles,
+  Twitter,
+  Zap
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -206,13 +205,9 @@ const Footer = () => {
                   />
                 </motion.div>
                 <div>
-                  <span className="text-lg md:text-xl font-bold text-white font-display">
+                    <span className="text-lg md:text-xl font-bold text-white font-display text-center">
                     Da-Vinci Coder Club
-                  </span>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Star className="w-3 h-3 text-yellow-500" />
-                    <span className="text-xs text-primary-400 font-medium">Premium Tech Community</span>
-                  </div>
+                    </span>
                 </div>
               </div>
               
