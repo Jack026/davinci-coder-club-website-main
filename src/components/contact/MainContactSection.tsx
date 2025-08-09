@@ -2,8 +2,8 @@
 
 'use client'
 
+import { useContact } from '@/contexts/ContactContext'
 import { createClient } from '@/lib/supabase/client'
-import { useContact } from 'contexts/ContactContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle, Loader, Mail, MessageSquare, Phone, Send, User } from 'lucide-react'
 import { useEffect, useState } from 'react'

@@ -1,16 +1,16 @@
 'use client'
 
-import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
+import Navigation from '@/components/Navigation'
 import ScrollToTop from '@/components/ScrollToTop'
+import ContactFAQ from '@/components/contact/ContactFAQ'
 import ContactHero from '@/components/contact/ContactHero'
 import ContactOptions from '@/components/contact/ContactOptions'
-import MainContactSection from '@/components/contact/MainContactSection'
-import InteractiveMap from '@/components/contact/InteractiveMap'
-import ContactFAQ from '@/components/contact/ContactFAQ'
-import QuickContactCTA from '@/components/contact/QuickContactCTA'
 import ContactSuccess from '@/components/contact/ContactSuccess'
-import { ContactProvider } from 'contexts/ContactContext'
+import InteractiveMap from '@/components/contact/InteractiveMap'
+import MainContactSection from '@/components/contact/MainContactSection'
+import QuickContactCTA from '@/components/contact/QuickContactCTA'
+import { ContactProvider } from '@/contexts/ContactContext'
 
 export default function ContactClient(){
     return (

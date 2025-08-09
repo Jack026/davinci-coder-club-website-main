@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useEvents } from '@/contexts/EventsContext'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Calendar, Star } from 'lucide-react'
-import { useEvents } from 'contexts/EventsContext'
+import { Calendar, ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import { useMemo, useState } from 'react'
 
 const EventCalendar = () => {
-  const { state } = useEvents()
+  const { events } = useEvents()
   const [currentDate, setCurrentDate] = useState(new Date())
 
   const monthNames = [
@@ -62,7 +62,7 @@ const EventCalendar = () => {
 
   const getEventsForDate = (date: Date) => {
     const dateString = date.toISOString().split('T')[0]
-    return state.events.filter(event => event.date === dateString)
+    return events.filter(event => event.date === dateString)
   }
 
   const navigateMonth = (direction: 'prev' | 'next') => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { useProjects } from 'contexts/ProjectsContext'
+import { useProjects } from '@/contexts/ProjectsContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Calendar, Download, ExternalLink, Eye, Github, Star, Tag, Users } from 'lucide-react'
 

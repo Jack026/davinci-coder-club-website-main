@@ -1,17 +1,17 @@
 'use client'
 
+import { useEvents } from '@/contexts/EventsContext'
 import { motion } from 'framer-motion'
-import { Calendar, Users, Trophy, Zap } from 'lucide-react'
+import { Calendar, Trophy, Users, Zap } from 'lucide-react'
 import Link from 'next/link'
-import { useEvents } from 'contexts/EventsContext'
 
 const EventsHero = () => {
-  const { state } = useEvents()
+  const { events } = useEvents()
   
   const heroStats = [
     { number: '25+', label: 'Events Organized', icon: Calendar },
     { number: '1500+', label: 'Total Participants', icon: Users },
-    { number: state.filteredEvents.filter(e => e.status === 'upcoming').length.toString(), label: 'Upcoming Events', icon: Trophy },
+    { number: events.filter(e => e.status === 'upcoming').length.toString(), label: 'Upcoming Events', icon: Trophy },
     { number: '100%', label: 'Innovation Rate', icon: Zap }
   ]
 

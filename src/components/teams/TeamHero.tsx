@@ -1,6 +1,6 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
+import { useTeam } from '@/contexts/TeamContext'
 import { motion } from 'framer-motion'
 import { Code, Crown, Star, TrendingUp, Trophy, Users } from 'lucide-react'
 import Link from 'next/link'

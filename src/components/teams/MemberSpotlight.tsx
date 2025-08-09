@@ -1,116 +1,34 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
+import { useTeam } from '@/contexts/TeamContext'
 import { motion } from 'framer-motion'
-import { Code, Crown, ExternalLink, Github, Linkedin, Mail, Star, Trophy, Users } from 'lucide-react'
+import { Code, Crown, Github, Linkedin, Mail, Star, Trophy, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const MemberSpotlight = () => {
-  const { state, dispatch } = useTeam()
-  const { spotlightMember } = state
+  const { members, loading } = useTeam() // Changed from state destructuring
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  // Mock spotlight-worthy members with Jack026 featured
-  useEffect(() => {
-    const mockMembers = [
-      {
-        id: 'Jack026',
-        name: 'Jack026',
-        position: 'Lead Developer & Innovation Architect',
-        department: 'Computer Science',
-        year: 'senior' as const,
-        role: 'tech-lead' as const,
-        skills: ['JavaScript', 'TypeScript', 'React', 'Node.js', 'Python', 'AI/ML', 'System Design', 'Leadership'],
-        bio: 'Visionary leader and full-stack developer with a passion for cutting-edge technology. Spearheads innovation initiatives and mentors fellow developers at Da-Vinci Coder Club.',
-        email: 'Jack026@davincicoders.club',
-        github: 'https://github.com/Jack026',
-        linkedin: 'https://linkedin.com/in/Jack026',
-        portfolio: 'https://Jack026.dev',
-        joinDate: '2022-08-15',
-        status: 'active' as const,
-        achievements: [
-          'Led 15+ successful projects',
-          'Mentored 50+ developers',
-          'Won 8 hackathons',
-          'Published 12 research papers',
-          'Speaker at 10+ conferences'
-        ],
-        projects: 47,
-        contributions: 1250,
-        specialization: ['Full Stack Development', 'AI/ML', 'System Architecture', 'Team Leadership'],
-        isJack026: true,
-        featured: true
-      },
-      {
-        id: 'sarah-chen',
-        name: 'Sarah Chen',
-        position: 'Vice President & UI/UX Lead',
-        department: 'Computer Science',
-        year: 'senior' as const,
-        role: 'vice-president' as const,
-        skills: ['UI/UX Design', 'Figma', 'React', 'Design Systems', 'User Research', 'Prototyping'],
-        bio: 'Creative designer and strategic thinker who transforms complex ideas into beautiful, user-friendly interfaces. Expert in design systems and user experience optimization.',
-        github: 'https://github.com/sarahchen',
-        linkedin: 'https://linkedin.com/in/sarahchen',
-        portfolio: 'https://sarahchen.design',
-        joinDate: '2022-09-01',
-        status: 'active' as const,
-        achievements: [
-          'Designed 20+ award-winning interfaces',
-          'Led design for 8 major projects',
-          'Created club\'s design system',
-          'Mentored 25+ designers'
-        ],
-        projects: 32,
-        contributions: 890,
-        specialization: ['UI/UX Design', 'Design Systems', 'User Research', 'Frontend Development'],
-        featured: true
-      },
-      {
-        id: 'mike-rodriguez',
-        name: 'Mike Rodriguez',
-        position: 'Backend Architecture Specialist',
-        department: 'Information Technology',
-        year: 'junior' as const,
-        role: 'core' as const,
-        skills: ['Node.js', 'Python', 'Docker', 'Kubernetes', 'AWS', 'Database Design', 'Microservices'],
-        bio: 'Backend wizard who builds scalable, robust systems. Specialist in cloud architecture and microservices design with a focus on performance optimization.',
-        github: 'https://github.com/mikerodriguez',
-        linkedin: 'https://linkedin.com/in/mikerodriguez',
-        joinDate: '2023-01-20',
-        status: 'active' as const,
-        achievements: [
-          'Architected 10+ scalable systems',
-          'Reduced server costs by 40%',
-          'Led DevOps initiatives',
-          'Mentored 15+ developers'
-        ],
-        projects: 28,
-        contributions: 675,
-        specialization: ['Backend Development', 'Cloud Architecture', 'DevOps', 'System Optimization'],
-        featured: true
-      }
-    ]
-
-    dispatch({ type: 'SET_MEMBERS', payload: mockMembers })
-    dispatch({ type: 'SET_LOADING', payload: false })
-  }, [dispatch])
+  // Get featured members (first 3 members or all if less than 3)
+  const spotlightMembers = members.slice(0, 3)
 
   // Auto-rotate spotlight every 10 seconds
   useEffect(() => {
-    if (!spotlightMember) return
+    if (spotlightMembers.length <= 1) return
 
     const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % 3) // Assuming 3 featured members
+      setCurrentIndex((prev) => (prev + 1) % spotlightMembers.length)
     }, 10000)
 
     return () => clearInterval(interval)
-  }, [spotlightMember])
+  }, [spotlightMembers.length])
 
-  if (!spotlightMember) return null
+  if (loading || spotlightMembers.length === 0) {
+    return null
+  }
 
-  const achievements = spotlightMember.achievements || []
-  const isJack026 = spotlightMember.isJack026
+  const spotlightMember = spotlightMembers[currentIndex]
+  const isJack026 = spotlightMember.name === 'Jack026'
 
   return (
     <section className="py-20 bg-bg-primary">
@@ -235,7 +153,7 @@ const MemberSpotlight = () => {
               </p>
               
               <p className="text-lg text-gray-300 mb-6">
-                {spotlightMember.department} • {spotlightMember.year.charAt(0).toUpperCase() + spotlightMember.year.slice(1)}
+                {spotlightMember.department} • {spotlightMember.year ? spotlightMember.year.charAt(0).toUpperCase() + spotlightMember.year.slice(1) : 'N/A'}
               </p>
 
               {spotlightMember.bio && (
@@ -272,9 +190,9 @@ const MemberSpotlight = () => {
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
                 <div className="text-2xl font-bold text-purple-500 mb-1 font-display">
-                  {achievements.length}
+                  {spotlightMember.projects || 0}
                 </div>
-                <div className="text-sm text-gray-400">Achievements</div>
+                <div className="text-sm text-gray-400">Projects</div>
               </div>
 
               <div className="text-center p-4 bg-glass-strong rounded-xl border border-white/10">
@@ -311,12 +229,12 @@ const MemberSpotlight = () => {
               </div>
             </div>
 
-            {/* Achievements */}
-            {achievements.length > 0 && (
+            {/* Skills Summary */}
+            {spotlightMember.skills && spotlightMember.skills.length > 0 && (
               <div className="mb-8">
-                <h4 className="text-lg font-semibold text-white mb-4 text-center">Recent Achievements</h4>
+                <h4 className="text-lg font-semibold text-white mb-4 text-center">Top Skills</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {achievements.slice(0, 4).map((achievement, index) => (
+                  {spotlightMember.skills.slice(0, 4).map((skill, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: -20 }}
@@ -331,7 +249,7 @@ const MemberSpotlight = () => {
                       <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
                         isJack026 ? 'bg-primary-500' : 'bg-accent-500'
                       }`} />
-                      <span className="text-gray-300 text-sm">{achievement}</span>
+                      <span className="text-gray-300 text-sm">{skill}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -377,18 +295,7 @@ const MemberSpotlight = () => {
                 </motion.a>
               )}
 
-              {spotlightMember.portfolio && (
-                <motion.a
-                  href={spotlightMember.portfolio}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-12 h-12 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:bg-purple-600 hover:text-white hover:border-purple-600 transition-all duration-300"
-                >
-                  <ExternalLink className="w-5 h-5" />
-                </motion.a>
-              )}
+              {/* Portfolio link removed since it's not in the Member interface */}
             </div>
 
             {/* Action Buttons */}
@@ -396,7 +303,7 @@ const MemberSpotlight = () => {
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => dispatch({ type: 'SET_SELECTED_MEMBER', payload: spotlightMember })}
+                                  onClick={() => {}} // Removed dispatch for now
                 className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
                   isJack026
                     ? 'bg-gradient-to-r from-primary-500 to-secondary-500 text-white hover:shadow-lg hover:shadow-primary-500/25'

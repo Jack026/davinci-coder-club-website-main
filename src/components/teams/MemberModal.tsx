@@ -1,35 +1,12 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Award, Calendar, Code, Crown, ExternalLink, Github, Linkedin, Mail, MapPin, Star, Trophy, Users, X } from 'lucide-react'
-import { useEffect } from 'react'
 
 const MemberModal = () => {
-  const { state, dispatch } = useTeam()
-  const { selectedMember, modalOpen } = state
-
-  useEffect(() => {
-    if (modalOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [modalOpen])
-
-  const closeModal = () => {
-    dispatch({ type: 'SET_MODAL_OPEN', payload: false })
-  }
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      closeModal()
-    }
-  }
+  // For now, return null since we don't have modal functionality
+  // This can be implemented later with a simpler state management
+  return null
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)

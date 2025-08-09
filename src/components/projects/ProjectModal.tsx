@@ -1,9 +1,9 @@
 'use client'
 
+import { useProjects } from '@/contexts/ProjectsContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { Award, Calendar, Code, Download, ExternalLink, Github, Star, Tag, Users, X } from 'lucide-react'
 import { useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { X, Github, ExternalLink, Star, Users, Download, Calendar, Tag, Code, Award } from 'lucide-react'
-import { useProjects } from 'contexts/ProjectsContext'
 
 const ProjectModal = () => {
   const { state, dispatch } = useProjects()

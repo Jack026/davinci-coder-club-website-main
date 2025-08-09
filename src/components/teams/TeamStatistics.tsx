@@ -1,17 +1,16 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
+import { useTeam } from '@/contexts/TeamContext'
 import { motion } from 'framer-motion'
 import { Award, Calendar, Code, MapPin, Star, TrendingUp, Users } from 'lucide-react'
 import { useState } from 'react'
 
 const TeamStatistics = () => {
-  const { state } = useTeam()
+  const { members, loading } = useTeam()
   const [activeChart, setActiveChart] = useState('department')
 
   // Calculate statistics from team data
   const calculateStats = () => {
-    const { members } = state
     
     // Department distribution
     const departmentStats = members.reduce((acc, member) => {
@@ -89,7 +88,7 @@ const TeamStatistics = () => {
   const overallStats = [
     {
       title: 'Total Members',
-      value: state.members.length.toString(),
+      value: members.length.toString(),
       icon: Users,
       gradient: 'from-blue-500 to-cyan-600',
       description: 'Active team members'
@@ -103,21 +102,21 @@ const TeamStatistics = () => {
     },
     {
       title: 'Total Projects',
-      value: state.members.reduce((sum, member) => sum + (member.projects || 0), 0).toString(),
+      value: members.reduce((sum, member) => sum + (member.projects || 0), 0).toString(),
       icon: Code,
       gradient: 'from-purple-500 to-pink-600',
       description: 'Completed projects'
     },
     {
       title: 'Combined Contributions',
-      value: state.members.reduce((sum, member) => sum + (member.contributions || 0), 0).toString(),
+      value: members.reduce((sum, member) => sum + (member.contributions || 0), 0).toString(),
       icon: Award,
       gradient: 'from-orange-500 to-red-600',
       description: 'Code contributions'
     }
   ]
 
-  if (state.loading) {
+  if (loading) {
     return (
       <section className="py-20 bg-bg-secondary">
         <div className="container mx-auto px-4 lg:px-8">

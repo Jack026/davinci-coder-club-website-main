@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    // Remove this line that's causing the critters error
-    // optimizeCss: true,
+    // Removed optimizeCss to avoid critters error in latest Next.js
     optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   images: {
@@ -10,14 +9,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: '**', // Allow all remote images
       },
     ],
   },
   compress: true,
-  poweredByHeader: false,
-  trailingSlash: false,
-  swcMinify: true,
-}
+  poweredByHeader: false, // Removes the "X-Powered-By: Next.js" header
+  trailingSlash: false,   // No trailing slash in URLs
+  swcMinify: true,        // Use SWC for faster minification
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

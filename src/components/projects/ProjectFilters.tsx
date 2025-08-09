@@ -1,9 +1,9 @@
 'use client'
 
+import { useProjects } from '@/contexts/ProjectsContext'
+import { AnimatePresence, motion } from 'framer-motion'
+import { ChevronDown, Filter, Grid3x3, List, Search, SortAsc, Star, X } from 'lucide-react'
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Filter, SortAsc, Grid3x3, List, X, ChevronDown, Star } from 'lucide-react'
-import { useProjects } from 'contexts/ProjectsContext'
 
 const ProjectFilters = () => {
   const { state, dispatch } = useProjects()

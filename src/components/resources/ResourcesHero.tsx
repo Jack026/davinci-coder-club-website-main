@@ -1,6 +1,6 @@
 'use client'
 
-import { useResources } from 'contexts/ResourcesContext'
+import { useResources } from '@/contexts/ResourcesContext'
 import { motion } from 'framer-motion'
 import { BookOpen, Code, Star, TrendingUp, Users, Zap } from 'lucide-react'
 import Link from 'next/link'

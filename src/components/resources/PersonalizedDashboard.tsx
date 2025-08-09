@@ -1,6 +1,6 @@
 'use client'
 
-import { useResources } from 'contexts/ResourcesContext'
+import { useResources } from '@/contexts/ResourcesContext'
 import { motion } from 'framer-motion'
 import { Award, BookOpen, Bookmark, ChevronRight, Clock, Star, Target, TrendingUp, Zap } from 'lucide-react'
 import { useEffect } from 'react'

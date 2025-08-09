@@ -1,6 +1,6 @@
 'use client'
 
-import { useResources } from 'contexts/ResourcesContext'
+import { useResources } from '@/contexts/ResourcesContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Clock, Filter, Grid3x3, List, Search, SortAsc, Star, TrendingUp, X } from 'lucide-react'
 import { useState } from 'react'

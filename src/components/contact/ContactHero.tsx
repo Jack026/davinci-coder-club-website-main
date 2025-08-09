@@ -1,6 +1,6 @@
 'use client'
 
-import { useContact } from 'contexts/ContactContext'
+import { useContact } from '@/contexts/ContactContext'
 import { motion } from 'framer-motion'
 import { Clock, MessageCircle, Phone, Users } from 'lucide-react'
 import Link from 'next/link'

@@ -1,14 +1,12 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Filter, Grid3x3, List, Search, SortAsc, X } from 'lucide-react'
-import { useState } from 'react'
 
 const TeamFilters = () => {
-  const { state, dispatch } = useTeam()
-  const { filters, filteredMembers } = state
-  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
+  // For now, return null since filtering is not implemented in the simple context
+  // This can be implemented later with a simpler state management
+  return null
 
   const departments = [
     { value: 'all', label: 'All Departments' },

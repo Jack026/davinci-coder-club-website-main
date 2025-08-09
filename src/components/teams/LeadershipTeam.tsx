@@ -1,13 +1,13 @@
 'use client'
 
-import { useTeam } from 'contexts/TeamContext'
+import { useTeam } from '@/contexts/TeamContext'
 import { motion } from 'framer-motion'
 import { Award, Crown, Github, Linkedin, Mail, Star, TrendingUp, Users } from 'lucide-react'
 
 const LeadershipTeam = () => {
-  const { state, dispatch } = useTeam()
+  const { members, loading } = useTeam()
 
-  const leadershipMembers = state.members.filter(member => 
+  const leadershipMembers = members.filter(member => 
     ['president', 'vice-president', 'secretary', 'treasurer', 'tech-lead'].includes(member.role)
   )
 
@@ -39,7 +39,7 @@ const LeadershipTeam = () => {
     ).join(' ')
   }
 
-  if (state.loading) {
+  if (loading) {
     return (
       <section className="py-20 bg-bg-secondary">
         <div className="container mx-auto px-4 lg:px-8">
@@ -89,7 +89,7 @@ const LeadershipTeam = () => {
                   transition={{ duration: 0.8, delay: index * 0.2 }}
                   viewport={{ once: true }}
                   whileHover={{ y: -15, scale: 1.02 }}
-                  onClick={() => dispatch({ type: 'SET_SELECTED_MEMBER', payload: leader })}
+                  onClick={() => {}} // Removed dispatch for now
                   className={`group bg-glass backdrop-blur-xl border rounded-3xl p-8 relative overflow-hidden cursor-pointer h-full flex flex-col ${
                     isJack026 
                       ? 'border-primary-500/40 bg-primary-500/5' 

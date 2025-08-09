@@ -1,6 +1,6 @@
 'use client'
 
-import { useContact } from 'contexts/ContactContext'
+import { useContact } from '@/contexts/ContactContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle, Clock, Crown, Mail, MessageSquare, X } from 'lucide-react'
 import { useEffect } from 'react'

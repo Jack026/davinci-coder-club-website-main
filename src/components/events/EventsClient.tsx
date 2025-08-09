@@ -1,16 +1,15 @@
 // src/app/events/EventsClient.tsx (Client Component)
 'use client'
 
-import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
-import { useState, useEffect } from 'react'
+import Navigation from '@/components/Navigation'
 import ScrollToTop from '@/components/ScrollToTop'
+import EventCalendar from '@/components/events/EventCalendar'
+import EventsGrid from '@/components/events/EventsGrid'
 import EventsHero from '@/components/events/EventsHero'
 import FeaturedEvents from '@/components/events/FeaturedEvents'
-import EventsGrid from '@/components/events/EventsGrid'
-import EventCalendar from '@/components/events/EventCalendar'
 import NewsletterSignup from '@/components/events/NewsletterSignup'
-import { EventsProvider } from 'contexts/EventsContext'
+import { EventsProvider } from '@/contexts/EventsContext'
 
 export default function EventsClient() {
   return (

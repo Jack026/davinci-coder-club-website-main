@@ -1,77 +1,16 @@
 'use client'
 
+import { useTeam } from '@/contexts/TeamContext'
 import { createClient } from '@/lib/supabase/client'
-import { useTeam } from 'contexts/TeamContext'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Calendar, Github, Linkedin, Mail, MapPin, Users } from 'lucide-react'
-import { useCallback, useEffect } from 'react'
-
-// Define the Profile interface
-interface Profile {
-  id: string;
-  full_name?: string;
-  email?: string;
-  username?: string;
-  avatar_url?: string;
-  is_Jack026?: boolean;
-  github_url?: string;
-  linkedin_url?: string;
-  portfolio_url?: string;
-}
+import { useEffect } from 'react'
 
 const AllMembers = () => {
-  const { state, dispatch } = useTeam()
-  const { filteredMembers, filters, loading } = state
+  const { members, loading, error, refreshMembers } = useTeam()
   const supabase = createClient()
 
-  // Move fetchMembers outside useEffect and make it a useCallback
-  const fetchMembers = useCallback(async () => {
-    dispatch({ type: 'SET_LOADING', payload: true })
-    
-    try {
-      const { data, error } = await supabase
-        .from('team_members')
-        .select(`
-          *,
-          profiles:profile_id (
-            id,
-            full_name,
-            email,
-            username,
-            avatar_url,
-            is_Jack026,
-            github_url,
-            linkedin_url,
-            portfolio_url
-          )
-        `)
-        .eq('status', 'active')
-        .order('is_Jack026', { ascending: false })
-        .order('created_at', { ascending: false })
-
-      if (error) throw error
-      
-      // Transform data to match Member interface from context
-      const transformedData = (data || []).map((item: any) => ({
-        ...item,
-        name: item.profiles?.full_name || item.name || 'Unknown',
-        year: item.year || '2024', // Ensure year is provided
-        profiles: item.profiles // Keep the profiles data
-      }))
-      
-      dispatch({ type: 'SET_MEMBERS', payload: transformedData })
-    } catch (error) {
-      console.error('Error fetching members:', error)
-      dispatch({ type: 'SET_MEMBERS', payload: [] })
-    } finally {
-      dispatch({ type: 'SET_LOADING', payload: false })
-    }
-  }, [supabase, dispatch])
-
   useEffect(() => {
-    // Fetch initial data
-    fetchMembers()
-
     // Subscribe to real-time changes
     const subscription = supabase
       .channel('team_members_changes')
@@ -84,7 +23,7 @@ const AllMembers = () => {
         },
         (payload) => {
           console.log('Real-time update:', payload)
-          fetchMembers() // Refresh data
+          refreshMembers() // Refresh data
         }
       )
       .subscribe()
@@ -92,7 +31,7 @@ const AllMembers = () => {
     return () => {
       subscription.unsubscribe()
     }
-  }, [fetchMembers, supabase]) // Fixed: Now properly includes dependencies
+  }, [refreshMembers, supabase])
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A'
@@ -143,7 +82,21 @@ const AllMembers = () => {
           <div className="text-center py-16">
             <div className="inline-flex items-center gap-3 text-primary-500 text-lg">
               <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
-              Loading team members for Jack026...
+              Loading team members...
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (error) {
+    return (
+      <section className="py-20 bg-bg-primary">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="text-center py-16">
+            <div className="text-red-500 text-lg">
+              Error loading team members: {error}
             </div>
           </div>
         </div>
@@ -163,7 +116,7 @@ const AllMembers = () => {
             <div className="text-sm text-gray-400 flex items-center gap-2">
               <span>Showing</span>
               <span className="bg-primary-500/20 text-primary-500 px-3 py-1 rounded-md font-semibold">
-                {filteredMembers.length}
+                {members.length}
               </span>
               <span>amazing developers</span>
             </div>
@@ -177,23 +130,16 @@ const AllMembers = () => {
         </div>
 
         <AnimatePresence mode="wait">
-          {filteredMembers.length > 0 ? (
+          {members.length > 0 ? (
             <motion.div
               key="members-grid"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className={`${
-                filters.view === 'grid' 
-                  ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' 
-                  : 'flex flex-col gap-4'
-              }`}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
-              {filteredMembers.map((member, index) => {
-                const isGridView = filters.view === 'grid'
+              {members.map((member: any, index: number) => {
                 const departmentGradient = getDepartmentGradient(member.department || 'Unknown')
-                // Access is_Jack026 from profiles with optional chaining
-                const isJack026 = (member as any).profiles?.is_Jack026 || false
 
                 return (
                   <motion.div
@@ -203,300 +149,148 @@ const AllMembers = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
-                    whileHover={{ y: isGridView ? -8 : -3, scale: isGridView ? 1.02 : 1.01 }}
-                    onClick={() => dispatch({ type: 'SET_SELECTED_MEMBER', payload: member })}
-                    className={`group bg-glass backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:border-primary-500/30 ${
-                      isGridView ? 'flex flex-col h-full' : 'flex flex-row items-center p-4'
-                    } ${
-                      isJack026 ? 'border-primary-500/40 bg-primary-500/5' : ''
-                    }`}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="group bg-glass backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:border-primary-500/30 flex flex-col h-full"
                   >
-                    {isGridView ? (
-                      <>
-                        {/* Grid View */}
-                        {/* Header */}
-                        <div className={`relative h-24 bg-gradient-to-br ${departmentGradient} flex items-center justify-center`}>
-                          <div className="absolute inset-0 bg-black/10" />
-                          
-                          {/* Avatar */}
-                          <div className="relative z-10">
-                            <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold text-white transition-transform duration-300 group-hover:scale-110">
-                              {((member as any).profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
-                            </div>
-                            
-                            {isJack026 && (
-                              <motion.div
-                                className="absolute -top-1 -right-1 text-sm"
-                                animate={{ rotate: [0, 15, -15, 0] }}
-                                transition={{
-                                  duration: 3,
-                                  repeat: Infinity,
-                                  ease: "easeInOut"
-                                }}
-                              >
-                                👑
-                              </motion.div>
-                            )}
-                          </div>
-
-                          {/* Status Badge */}
-                          <div className="absolute top-2 right-2">
-                            <div className={`w-3 h-3 rounded-full ${
-                              member.status === 'active' ? 'bg-green-500' : 
-                              member.status === 'inactive' ? 'bg-gray-500' : 'bg-blue-500'
-                            }`} />
-                          </div>
-
-                          {/* Jack026 Badge */}
-                          {isJack026 && (
-                            <div className="absolute top-2 left-2">
-                              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                                You
-                              </div>
-                            </div>
-                          )}
+                    {/* Header */}
+                    <div className={`relative h-24 bg-gradient-to-br ${departmentGradient} flex items-center justify-center`}>
+                      <div className="absolute inset-0 bg-black/10" />
+                      
+                      {/* Avatar */}
+                      <div className="relative z-10">
+                        <div className="w-14 h-14 bg-white/20 rounded-full flex items-center justify-center text-lg font-bold text-white transition-transform duration-300 group-hover:scale-110">
+                          {(member.name || 'U').charAt(0).toUpperCase()}
                         </div>
+                      </div>
 
-                        {/* Body */}
-                        <div className="p-4 flex-1 flex flex-col">
-                          <h4 className="text-base font-bold text-white mb-1 font-display group-hover:text-primary-400 transition-colors duration-300 line-clamp-1">
-                            {(member as any).profiles?.full_name || member.name || 'Unknown'}
-                            {isJack026 && <span className="ml-1 text-sm">🌟</span>}
-                          </h4>
-                          
-                          <p className="text-primary-400 mb-1 font-semibold text-sm line-clamp-1">
-                            {member.position || 'Member'}
+                      {/* Status Badge */}
+                      <div className="absolute top-2 right-2">
+                        <div className={`w-3 h-3 rounded-full ${
+                          member.status === 'active' ? 'bg-green-500' : 
+                          member.status === 'inactive' ? 'bg-gray-500' : 'bg-blue-500'
+                        }`} />
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-6 flex-1 flex flex-col">
+                      {/* Name and Role */}
+                      <div className="mb-4">
+                        <h3 className="text-xl font-bold text-white mb-1 group-hover:text-primary-400 transition-colors">
+                          {member.name}
+                        </h3>
+                        <p className={`text-sm font-semibold ${getRoleColor(member.role)}`}>
+                          {formatRole(member.role)}
+                        </p>
+                        {member.position && (
+                          <p className="text-gray-400 text-sm mt-1">
+                            {member.position}
                           </p>
-                          
-                          <p className="text-gray-400 text-xs mb-3 line-clamp-1">
-                            {member.department || 'Unknown Department'}
-                          </p>
+                        )}
+                      </div>
 
-                          {/* Role */}
-                          <div className="flex items-center justify-between mb-3">
-                            <span className={`text-xs font-semibold ${getRoleColor(member.role || 'member')}`}>
-                              {formatRole(member.role || 'member')}
-                            </span>
-                            <span className="text-xs text-gray-500">
-                              {member.year || 'N/A'}
-                            </span>
+                      {/* Department and Year */}
+                      <div className="mb-4 space-y-2">
+                        {member.department && (
+                          <div className="flex items-center gap-2 text-sm text-gray-400">
+                            <MapPin className="w-4 h-4" />
+                            <span>{member.department}</span>
                           </div>
-
-                          {/* Skills Preview */}
-                          <div className="flex flex-wrap gap-1 mb-3">
-                            {(member.skills || []).slice(0, 2).map((skill: string, skillIndex: number) => (
-                              <span
-                                key={skillIndex}
-                                className="px-2 py-1 bg-glass-strong text-xs text-gray-400 rounded-md"
-                              >
-                                {skill}
-                              </span>
-                            ))}
-                            {(member.skills || []).length > 2 && (
-                              <span className="px-2 py-1 bg-glass-strong text-xs text-primary-400 rounded-md">
-                                +{(member.skills || []).length - 2}
-                              </span>
-                            )}
+                        )}
+                        {member.year && (
+                          <div className="flex items-center gap-2 text-sm text-gray-400">
+                            <Calendar className="w-4 h-4" />
+                            <span>Year {member.year}</span>
                           </div>
+                        )}
+                      </div>
 
-                          {/* Quick Stats */}
-                          <div className="flex justify-between text-xs text-gray-400 mb-3">
-                            <span>Projects: {member.projects || 0}</span>
-                            <span>Contributions: {member.contributions || 0}</span>
-                          </div>
-
-                          {/* Social Links */}
-                          <div className="flex justify-center gap-2 mt-auto">
-                            {((member as any).profiles?.github_url || member.github) && (
-                              <motion.a
-                                href={(member as any).profiles?.github_url || member.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.1 }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-6 h-6 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-500 transition-all duration-300"
-                              >
-                                <Github className="w-3 h-3" />
-                              </motion.a>
-                            )}
-                            
-                            {((member as any).profiles?.linkedin_url || member.linkedin) && (
-                              <motion.a
-                                href={(member as any).profiles?.linkedin_url || member.linkedin}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{ scale: 1.1 }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-6 h-6 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-600 transition-all duration-300"
-                              >
-                                <Linkedin className="w-3 h-3" />
-                              </motion.a>
-                            )}
-                            
-                            {((member as any).profiles?.email || member.email) && (
-                              <motion.a
-                                href={`mailto:${(member as any).profiles?.email || member.email}`}
-                                whileHover={{ scale: 1.1 }}
-                                onClick={(e) => e.stopPropagation()}
-                                className="w-6 h-6 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-600 transition-all duration-300"
-                              >
-                                <Mail className="w-3 h-3" />
-                              </motion.a>
-                            )}
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        {/* List View */}
-                        <div className={`w-16 h-16 bg-gradient-to-br ${departmentGradient} rounded-lg flex items-center justify-center text-lg font-bold text-white mr-4 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 relative`}>
-                          {((member as any).profiles?.full_name || member.name || 'U').charAt(0).toUpperCase()}
-                          
-                          {isJack026 && (
-                            <motion.div
-                              className="absolute -top-1 -right-1 text-xs"
-                              animate={{ rotate: [0, 15, -15, 0] }}
-                              transition={{
-                                duration: 3,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                              }}
-                            >
-                              👑
-                            </motion.div>
-                          )}
-                        </div>
-
-                        <div className="flex-1 mr-4">
-                          <div className="flex items-center gap-3 mb-1">
-                            <h4 className="text-lg font-bold text-white group-hover:text-primary-400 transition-colors duration-300">
-                              {(member as any).profiles?.full_name || member.name || 'Unknown'}
-                              {isJack026 && <span className="ml-2 text-sm">🌟</span>}
-                            </h4>
-                            <span className={`text-sm font-semibold ${getRoleColor(member.role || 'member')}`}>
-                              {formatRole(member.role || 'member')}
-                            </span>
-                            {isJack026 && (
-                              <span className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                                You
-                              </span>
-                            )}
-                          </div>
-
-                          <p className="text-primary-400 text-sm mb-1 font-semibold">
-                            {member.position || 'Member'}
-                          </p>
-
-                          <div className="flex items-center gap-4 text-sm text-gray-400 mb-2">
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {member.department || 'Unknown Department'}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
-                              {member.year || 'N/A'}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Users className="w-3 h-3" />
-                              {member.projects || 0} projects
-                            </div>
-                          </div>
-
+                      {/* Skills */}
+                      {member.skills && member.skills.length > 0 && (
+                        <div className="mb-4">
                           <div className="flex flex-wrap gap-1">
-                            {(member.skills || []).slice(0, 4).map((skill: string, skillIndex: number) => (
+                            {member.skills.slice(0, 3).map((skill: string, skillIndex: number) => (
                               <span
                                 key={skillIndex}
-                                className="px-2 py-1 bg-glass-strong text-xs text-gray-400 rounded-md"
+                                className="px-2 py-1 bg-primary-500/20 text-primary-400 text-xs rounded-md"
                               >
                                 {skill}
                               </span>
                             ))}
-                            {(member.skills || []).length > 4 && (
-                              <span className="px-2 py-1 bg-glass-strong text-xs text-primary-400 rounded-md">
-                                +{(member.skills || []).length - 4}
+                            {member.skills.length > 3 && (
+                              <span className="px-2 py-1 bg-gray-500/20 text-gray-400 text-xs rounded-md">
+                                +{member.skills.length - 3} more
                               </span>
                             )}
                           </div>
                         </div>
+                      )}
 
-                        <div className="flex items-center gap-2">
-                          {((member as any).profiles?.github_url || member.github) && (
-                            <motion.a
-                              href={(member as any).profiles?.github_url || member.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              whileHover={{ scale: 1.1 }}
-                              onClick={(e) => e.stopPropagation()}
-                              className="w-8 h-8 bg-glass border border-white/10 rounded-full flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary-500 transition-all duration-300"
-                            >
-                              <Github className="w-4 h-4" />
-                            </motion.a>
-                          )}
-                          
-                          <div className={`w-3 h-3 rounded-full ${
-                            member.status === 'active' ? 'bg-green-500' : 
-                            member.status === 'inactive' ? 'bg-gray-500' : 'bg-blue-500'
-                          }`} />
+                      {/* Stats */}
+                      <div className="mt-auto pt-4 border-t border-white/10">
+                        <div className="flex justify-between text-sm text-gray-400">
+                          <div className="flex items-center gap-1">
+                            <Users className="w-4 h-4" />
+                            <span>{member.projects || 0} projects</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span>⭐ {member.contributions || 0}</span>
+                          </div>
                         </div>
-                      </>
-                    )}
+                      </div>
+
+                      {/* Social Links */}
+                      {(member.github || member.linkedin || member.email) && (
+                        <div className="mt-4 pt-4 border-t border-white/10">
+                          <div className="flex gap-2">
+                            {member.github && (
+                              <a
+                                href={member.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 bg-gray-800/50 rounded-lg hover:bg-primary-500/20 transition-colors"
+                              >
+                                <Github className="w-4 h-4 text-gray-400 hover:text-primary-400" />
+                              </a>
+                            )}
+                            {member.linkedin && (
+                              <a
+                                href={member.linkedin}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 bg-gray-800/50 rounded-lg hover:bg-primary-500/20 transition-colors"
+                              >
+                                <Linkedin className="w-4 h-4 text-gray-400 hover:text-primary-400" />
+                              </a>
+                            )}
+                            {member.email && (
+                              <a
+                                href={`mailto:${member.email}`}
+                                className="p-2 bg-gray-800/50 rounded-lg hover:bg-primary-500/20 transition-colors"
+                              >
+                                <Mail className="w-4 h-4 text-gray-400 hover:text-primary-400" />
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </motion.div>
                 )
               })}
             </motion.div>
           ) : (
             <motion.div
-              key="no-members"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="text-center py-20"
+              className="text-center py-16"
             >
-              <div className="text-8xl mb-6 opacity-50">👥</div>
-              <h3 className="text-3xl font-bold text-white mb-4">No Members Found</h3>
-              <p className="text-gray-400 max-w-md mx-auto mb-8 text-lg">
-                Try adjusting your filters to discover more amazing team members, Jack026.
-              </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => dispatch({ type: 'UPDATE_FILTERS', payload: { 
-                  search: '', 
-                  department: 'all', 
-                  year: 'all', 
-                  role: 'all',
-                  skill: 'all',
-                  status: 'active'
-                }})}
-                className="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-3 px-8 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-              >
-                Clear All Filters
-              </motion.button>
+              <div className="text-gray-400 text-lg">
+                No team members found. Add some members through the admin panel!
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Load More / Pagination */}
-        {filteredMembers.length > 0 && filteredMembers.length < state.members.length && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mt-16"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-glass backdrop-blur-xl border border-white/10 text-white py-4 px-8 rounded-xl font-semibold hover:bg-glass-strong hover:border-primary-500 transition-all duration-300"
-            >
-              Load More Members
-            </motion.button>
-            <p className="text-sm text-gray-400 mt-4">
-              Showing {filteredMembers.length} of {state.members.length} members
-            </p>
-          </motion.div>
-        )}
       </div>
     </section>
   )
