@@ -2,11 +2,37 @@
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { ChevronDown, Filter, Grid3x3, List, Search, SortAsc, X } from 'lucide-react'
+import { useState, useMemo } from 'react'
+import { useTeam, searchTeamMembers, getTeamMembersByRole, getTeamMembersByDepartment } from '@/contexts/TeamContext'
+
+interface FilterState {
+  search: string
+  department: string
+  year: string
+  role: string
+  skill: string
+  status: string
+  sortBy: 'name' | 'joinDate' | 'contributions' | 'department'
+  sortOrder: 'asc' | 'desc'
+  view: 'grid' | 'list'
+}
 
 const TeamFilters = () => {
-  // For now, return null since filtering is not implemented in the simple context
-  // This can be implemented later with a simpler state management
-  return null
+  const { members } = useTeam()
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false)
+  
+  // Filter state
+  const [filters, setFilters] = useState<FilterState>({
+    search: '',
+    department: 'all',
+    year: 'all',
+    role: 'all',
+    skill: 'all',
+    status: 'active',
+    sortBy: 'name',
+    sortOrder: 'asc',
+    view: 'grid'
+  })
 
   const departments = [
     { value: 'all', label: 'All Departments' },
@@ -66,8 +92,80 @@ const TeamFilters = () => {
     { value: 'department', label: 'Department' }
   ]
 
-  const updateFilters = (updates: Partial<typeof filters>) => {
-    dispatch({ type: 'UPDATE_FILTERS', payload: updates })
+  // Filter and sort members
+  const filteredMembers = useMemo(() => {
+    let filtered = [...members]
+
+    // Apply search filter
+    if (filters.search) {
+      filtered = searchTeamMembers(filtered, filters.search)
+    }
+
+    // Apply department filter
+    if (filters.department !== 'all') {
+      filtered = getTeamMembersByDepartment(filtered, filters.department)
+    }
+
+    // Apply role filter
+    if (filters.role !== 'all') {
+      filtered = getTeamMembersByRole(filtered, filters.role)
+    }
+
+    // Apply year filter
+    if (filters.year !== 'all') {
+      filtered = filtered.filter(member => member.year === filters.year)
+    }
+
+    // Apply skill filter
+    if (filters.skill !== 'all') {
+      filtered = filtered.filter(member => 
+        member.skills.some(skill => skill.toLowerCase().includes(filters.skill.toLowerCase()))
+      )
+    }
+
+    // Apply status filter
+    if (filters.status !== 'all') {
+      filtered = filtered.filter(member => member.status === filters.status)
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      let aValue: any, bValue: any
+
+      switch (filters.sortBy) {
+        case 'name':
+          aValue = a.name.toLowerCase()
+          bValue = b.name.toLowerCase()
+          break
+        case 'joinDate':
+          aValue = new Date(a.joinDate || a.created_at)
+          bValue = new Date(b.joinDate || b.created_at)
+          break
+        case 'contributions':
+          aValue = a.contributions || 0
+          bValue = b.contributions || 0
+          break
+        case 'department':
+          aValue = a.department?.toLowerCase() || ''
+          bValue = b.department?.toLowerCase() || ''
+          break
+        default:
+          aValue = a.name.toLowerCase()
+          bValue = b.name.toLowerCase()
+      }
+
+      if (filters.sortOrder === 'asc') {
+        return aValue > bValue ? 1 : -1
+      } else {
+        return aValue < bValue ? 1 : -1
+      }
+    })
+
+    return filtered
+  }, [members, filters])
+
+  const updateFilters = (updates: Partial<FilterState>) => {
+    setFilters(prev => ({ ...prev, ...updates }))
   }
 
   const clearFilters = () => {
@@ -86,25 +184,18 @@ const TeamFilters = () => {
   ).length
 
   const quickFilters = [
-    { key: 'leadership', label: 'Leadership', value: 'president,vice-president,secretary,treasurer', icon: '👑' },
-    { key: 'tech-leads', label: 'Tech Leads', value: 'tech-lead,design-lead', icon: '🚀' },
+    { key: 'leadership', label: 'Leadership', value: 'president', icon: '👑' },
+    { key: 'tech-leads', label: 'Tech Leads', value: 'tech-lead', icon: '🚀' },
     { key: 'core-team', label: 'Core Team', value: 'core', icon: '⭐' },
-    { key: 'Jack026', label: 'Jack026', value: 'Jack026', icon: '🔥' }
+    { key: 'jack026', label: 'Jack026', value: 'jack026', icon: '🔥' }
   ]
 
   const handleQuickFilter = (filterKey: string, filterValue: string) => {
-    if (filterKey === 'Jack026') {
+    if (filterKey === 'jack026') {
       // Special handling for Jack026 filter
-      updateFilters({ search: 'Jack026' })
+      updateFilters({ search: 'jack026' })
     } else {
-      const roles = filterValue.split(',')
-      if (roles.length === 1) {
-        updateFilters({ role: roles[0] })
-      } else {
-        // For multiple roles, we'll set the first one for now
-        // In a real app, you might want to support multi-select
-        updateFilters({ role: roles[0] })
-      }
+      updateFilters({ role: filterValue })
     }
   }
 
@@ -121,15 +212,16 @@ const TeamFilters = () => {
               placeholder="Search members by name, position, skills..."
               value={filters.search}
               onChange={(e) => updateFilters({ search: e.target.value })}
-              className="w-full pl-10 pr-4 py-3 bg-glass backdrop-blur-xl border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
+              className="w-full pl-10 pr-12 py-3 bg-glass backdrop-blur-xl border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 transition-all duration-300"
             />
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-white hover:bg-primary-600 transition-colors duration-200"
-            >
-              <Search className="w-4 h-4" />
-            </motion.button>
+            {filters.search && (
+              <button
+                onClick={() => updateFilters({ search: '' })}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-gray-500/50 hover:bg-red-500 rounded-lg flex items-center justify-center text-white transition-colors duration-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           {/* Quick Department Filters */}
@@ -155,9 +247,9 @@ const TeamFilters = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => handleQuickFilter('Jack026', 'Jack026')}
+            onClick={() => handleQuickFilter('jack026', 'jack026')}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition-all duration-300 text-sm font-medium ${
-              filters.search.toLowerCase().includes('Jack026')
+              filters.search.toLowerCase().includes('jack026')
                 ? 'bg-gradient-to-r from-yellow-500 to-orange-500 border-yellow-500 text-white'
                 : 'bg-glass border-white/10 text-gray-300 hover:bg-glass-strong'
             }`}
@@ -176,7 +268,12 @@ const TeamFilters = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleQuickFilter(filter.key, filter.value)}
-              className="flex items-center gap-2 px-3 py-1.5 bg-glass border border-white/10 rounded-full text-sm text-gray-300 hover:bg-glass-strong hover:border-primary-500/50 transition-all duration-300"
+              className={`flex items-center gap-2 px-3 py-1.5 border rounded-full text-sm transition-all duration-300 ${
+                (filter.key === 'jack026' && filters.search.toLowerCase().includes('jack026')) ||
+                (filter.key !== 'jack026' && filters.role === filter.value)
+                  ? 'bg-primary-500 border-primary-500 text-white'
+                  : 'bg-glass border-white/10 text-gray-300 hover:bg-glass-strong hover:border-primary-500/50'
+              }`}
             >
               <span>{filter.icon}</span>
               <span>{filter.label}</span>
@@ -208,7 +305,8 @@ const TeamFilters = () => {
             </motion.button>
 
             <div className="text-sm text-gray-400">
-              Showing <span className="text-primary-500 font-semibold">{filteredMembers.length}</span> team members
+              Showing <span className="text-primary-500 font-semibold">{filteredMembers.length}</span> of{' '}
+              <span className="text-white font-semibold">{members.length}</span> team members
             </div>
           </div>
 
@@ -235,7 +333,7 @@ const TeamFilters = () => {
                     : 'bg-glass border-white/10 text-gray-400 hover:text-white'
                 }`}
               >
-                <SortAsc className={`w-4 h-4 ${filters.sortOrder === 'desc' ? 'rotate-180' : ''}`} />
+                <SortAsc className={`w-4 h-4 transition-transform ${filters.sortOrder === 'desc' ? 'rotate-180' : ''}`} />
               </button>
             </div>
 
@@ -387,9 +485,9 @@ const TeamFilters = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex items-center gap-2 px-3 py-1 bg-primary-500 text-white rounded-full text-sm font-medium"
                   >
-                    <span>{key}: {value}</span>
+                    <span className="capitalize">{key}: {value}</span>
                     <button
-                      onClick={() => updateFilters({ [key]: key === 'search' ? '' : 'all' })}
+                      onClick={() => updateFilters({ [key]: key === 'search' ? '' : 'all' } as any)}
                       className="w-4 h-4 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors duration-200"
                     >
                       <X className="w-3 h-3" />

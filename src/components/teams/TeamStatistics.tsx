@@ -14,13 +14,17 @@ const TeamStatistics = () => {
     
     // Department distribution
     const departmentStats = members.reduce((acc, member) => {
-      acc[member.department] = (acc[member.department] || 0) + 1
+      if (member.department) {
+        acc[member.department] = (acc[member.department] || 0) + 1
+      }
       return acc
     }, {} as Record<string, number>)
 
     // Year distribution
     const yearStats = members.reduce((acc, member) => {
-      acc[member.year] = (acc[member.year] || 0) + 1
+      if (member.year) {
+        acc[member.year] = (acc[member.year] || 0) + 1
+      }
       return acc
     }, {} as Record<string, number>)
 

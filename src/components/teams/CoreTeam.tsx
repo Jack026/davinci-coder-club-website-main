@@ -70,7 +70,7 @@ const CoreTeam = () => {
         {coreTeamMembers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {coreTeamMembers.map((member, index) => {
-              const departmentGradient = getDepartmentGradient(member.department)
+              const departmentGradient = getDepartmentGradient(member.department ?? "")
               const SpecializationIcon = getSpecializationIcon(member.specialization || [])
               const isJack026 = member.isJack026
 

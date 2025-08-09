@@ -6,7 +6,7 @@ import { Code, Crown, Star, TrendingUp, Trophy, Users } from 'lucide-react'
 import Link from 'next/link'
 
 const TeamHero = () => {
-  const { state } = useTeam()
+  const teamContext = useTeam()
   
   const heroStats = [
     { 

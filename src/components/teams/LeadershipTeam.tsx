@@ -181,7 +181,7 @@ const LeadershipTeam = () => {
                       </p>
                       
                       <p className="text-gray-400 text-sm mb-4">
-                        {leader.department} • {leader.year.charAt(0).toUpperCase() + leader.year.slice(1)}
+                        {leader.department} • {(leader.year ?? '').charAt(0).toUpperCase() + (leader.year ?? '').slice(1)}
                       </p>
 
                       {leader.bio && (
