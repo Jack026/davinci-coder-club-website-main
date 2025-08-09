@@ -32,8 +32,8 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Check for Ctrl+S
-      if (event.ctrlKey && event.key === 's') {
+      // Check for Ctrl+S or Cmd+S to toggle admin panel
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
         event.preventDefault()
         toggleAdminPanel()
       }
@@ -60,4 +60,4 @@ export const AdminProvider = ({ children }: AdminProviderProps) => {
       {children}
     </AdminContext.Provider>
   )
-} 
+}

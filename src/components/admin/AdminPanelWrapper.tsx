@@ -14,4 +14,4 @@ const AdminPanelWrapper = () => {
   )
 }
 
-export default AdminPanelWrapper 
+export default AdminPanelWrapper
