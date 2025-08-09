@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Fira_Code, Inter } from 'next/font/google'
 import './globals.css'
 
+// Add these imports:
+import { AdminProvider } from '@/contexts/AdminContext'
+import AdminPanelWrapper from '@/components/admin/AdminPanelWrapper'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -119,15 +122,16 @@ export default function RootLayout({
       </head>
       
       <body className="font-primary antialiased bg-slate-950 text-white overflow-x-hidden">
-        {/* Completely clean wrapper - no classes, no effects */}
-        <div className="min-h-screen">
-          {/* Direct content - no containers, no constraints */}
-          <main className="px-0">
-            {children}
-          </main>
-        </div>
+        <AdminProvider>
+          <div className="min-h-screen">
+            <main className="px-0">
+              {children}
+            </main>
+          </div>
+          {/* This enables the floating admin panel and global shortcut */}
+          <AdminPanelWrapper />
+        </AdminProvider>
         
-
         {/* Minimal Performance Script */}
         <script
           dangerouslySetInnerHTML={{
