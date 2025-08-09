@@ -352,10 +352,12 @@ const TeamTab = () => {
     fetchMembers()
   }, [])
 
+  // Make fetchMembers async and always get fresh data
   const fetchMembers = async () => {
     try {
       setLoading(true)
       const data = await adminService.getTeamMembers()
+      console.log('Fresh team members:', data) // Debug: See what you get
       setMembers(data)
     } catch (error) {
       console.error('Error fetching members:', error)
@@ -386,10 +388,11 @@ const TeamTab = () => {
     }
   }
 
-  const handleFormSuccess = () => {
+  // PATCH: Make sure we await fetchMembers before closing the modal.
+  const handleFormSuccess = async () => {
+    await fetchMembers()
     setShowForm(false)
     setEditingMember(null)
-    fetchMembers()
   }
 
   const handleViewMember = (member: any) => {
