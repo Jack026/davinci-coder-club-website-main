@@ -16,6 +16,8 @@ export interface Event {
   tags: string[]
   created_at: string
   updated_at: string
+  featured?: boolean // <-- from the EventCalendar issue
+
 }
 
 interface EventsContextType {
